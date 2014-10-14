@@ -3,7 +3,7 @@ ChatSystem
 
 A simple but nice ChatSystem
 
-##Installation
+##Importation
 
 *If you don't know Git* Here is how to import the project on your computer :
 
