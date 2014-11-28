@@ -1,6 +1,7 @@
 package messages;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import data.*;
@@ -8,13 +9,15 @@ import messages.data.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
+import java.util.Map;
 
 /**
  * Created by djemaa on 28/11/14.
  */
 public class JSONMessageFactory extends MessageFactory {
+    private ObjectMapper mapper =  new ObjectMapper();
     private static JSONMessageFactory instance = null;
-    private ObjectMapper mapper = new ObjectMapper();
+
 
     private JSONMessageFactory(){
 
@@ -241,5 +244,27 @@ public class JSONMessageFactory extends MessageFactory {
 
         }
         return ret;
+    }
+
+    @Override
+    public MessageType getType(String parsedString) throws IOException {
+        MessageType type = null;
+        try {
+            Map<String, String> map = mapper.readValue(parsedString, Map.class);
+            type = MessageType.fromString(map.get("type"));
+        } catch (JsonGenerationException e) {
+
+            e.printStackTrace();
+
+        } catch (JsonMappingException e) {
+
+            e.printStackTrace();
+
+        } catch (IOException e) {
+
+            e.printStackTrace();
+
+        }
+        return type;
     }
 }

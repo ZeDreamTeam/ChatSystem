@@ -13,16 +13,17 @@ import java.net.SocketException;
  */
 public class ChatNI {
     private final UdpSender udpSender;
-    private final UdpReceiver udpReceiver;
+//    private final UdpReceiver udpReceiver;
     private final MessageFactory factory;
     public ChatNI() throws SocketException {
         factory = MessageFactory.getFactory(MessageFactory.Type.JSON);
-        this.udpReceiver = new UdpReceiver(this);
+        //this.udpReceiver = new UdpReceiver(this);
         this.udpSender = new UdpSender();
     }
     public void performSendHello(HelloMessage helloMessage) throws IOException {
         AbstractHelloMessage message = factory.serializedHelloMessage(helloMessage);
         byte[] messageBytes = message.toString().getBytes();
+
         this.udpSender.sendBroadcast(messageBytes);
 
     }
