@@ -1,14 +1,9 @@
 package messages;
 
-import com.fasterxml.jackson.core.JsonGenerationException;
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import data.*;
 import messages.data.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import java.io.IOException;
 import java.util.Map;
 
 /**
@@ -32,238 +27,132 @@ public class JSONMessageFactory extends MessageFactory {
 
 
     @Override
-    public AbstractHelloMessage serializedHelloMessage(HelloMessage hello) {
-        AbstractHelloMessage ret = null;
+    public AbstractHelloMessage serializedHelloMessage(HelloMessage hello) throws ParsingException.JSONParsingException {
+        AbstractHelloMessage ret;
         try {
             ret = new JSONHelloMessage(mapper.writeValueAsString(hello));
-        }catch (JsonGenerationException e) {
-
-            e.printStackTrace();
-
-        } catch (JsonMappingException e) {
-
-            e.printStackTrace();
-
-        } catch (IOException e) {
-
-            e.printStackTrace();
+        }catch (Exception e) {
+            throw new ParsingException.JSONParsingException("Error parsing Hello message", e);
 
         }
         return ret;
     }
 
     @Override
-    public AbstractHelloAckMessage serializedHelloAckMessage(HelloAckMessage helloAck) {
-        AbstractHelloAckMessage ret = null;
+    public AbstractHelloAckMessage serializedHelloAckMessage(HelloAckMessage helloAck) throws ParsingException.JSONParsingException {
+        AbstractHelloAckMessage ret;
         try {
             ret = new JSONHelloAckMessage(mapper.writeValueAsString(helloAck));
-        }catch (JsonGenerationException e) {
-
-            e.printStackTrace();
-
-        } catch (JsonMappingException e) {
-
-            e.printStackTrace();
-
-        } catch (IOException e) {
-
-            e.printStackTrace();
+        }catch (Exception e) {
+            throw new ParsingException.JSONParsingException("Error parsing HelloAck message", e);
 
         }
         return ret;
     }
 
     @Override
-    public AbstractMessMessage serializedMessMessage(MessMessage mess) {
-        AbstractMessMessage ret = null;
+    public AbstractMessMessage serializedMessMessage(MessMessage mess) throws ParsingException.JSONParsingException {
+        AbstractMessMessage ret;
         try {
             ret = new JSONMessMessage(mapper.writeValueAsString(mess));
-        }catch (JsonGenerationException e) {
-
-            e.printStackTrace();
-
-        } catch (JsonMappingException e) {
-
-            e.printStackTrace();
-
-        } catch (IOException e) {
-
-            e.printStackTrace();
+        }catch (Exception e) {
+            throw new ParsingException.JSONParsingException("Error parsing Mess (data) message", e);
 
         }
         return ret;
     }
 
     @Override
-    public AbstractMessAckMessage serializedMessAckMessage(MessAckMessage messAck) {
-        AbstractMessAckMessage ret = null;
+    public AbstractMessAckMessage serializedMessAckMessage(MessAckMessage messAck) throws ParsingException.JSONParsingException {
+        AbstractMessAckMessage ret;
         try {
             ret = new JSONMessAckMessage(mapper.writeValueAsString(messAck));
-        }catch (JsonGenerationException e) {
-
-            e.printStackTrace();
-
-        } catch (JsonMappingException e) {
-
-            e.printStackTrace();
-
-        } catch (IOException e) {
-
-            e.printStackTrace();
+        }catch (Exception e) {
+            throw new ParsingException.JSONParsingException("Error parsing Message ack message", e);
 
         }
         return ret;
     }
 
     @Override
-    public AbstractGoodbyeMessage serializedGoodbyeMessage(GoodbyeMessage bye) {
-        AbstractGoodbyeMessage ret = null;
+    public AbstractGoodbyeMessage serializedGoodbyeMessage(GoodbyeMessage bye) throws ParsingException.JSONParsingException {
+        AbstractGoodbyeMessage ret;
         try {
             ret = new JSONGoodbyeMessage(mapper.writeValueAsString(bye));
-        }catch (JsonGenerationException e) {
-
-            e.printStackTrace();
-
-        } catch (JsonMappingException e) {
-
-            e.printStackTrace();
-
-        } catch (IOException e) {
-
-            e.printStackTrace();
-
+        }catch (Exception e) {
+            throw new ParsingException.JSONParsingException("Error parsing Goodbye message", e);
         }
         return ret;
     }
 
     @Override
-    public HelloMessage deserializedHelloMessage(byte[] hello) {
-        HelloMessage ret = null;
+    public HelloMessage deserializedHelloMessage(byte[] hello) throws ParsingException.JSONUnParsingException {
+        HelloMessage ret;
         try{
 
             ret = mapper.readValue(new String(hello,0, hello.length), HelloMessage.class);
-        }  catch (JsonGenerationException e) {
-
-            e.printStackTrace();
-
-        } catch (JsonMappingException e) {
-
-            e.printStackTrace();
-
-        } catch (IOException e) {
-
-            e.printStackTrace();
-
+        }catch (Exception e) {
+            throw new ParsingException.JSONUnParsingException("Error unserializing Hello message", e);
         }
         return ret;
     }
 
     @Override
-    public HelloAckMessage deserializedHelloAckMessage(byte[] helloAck) {
-        HelloAckMessage ret = null;
+    public HelloAckMessage deserializedHelloAckMessage(byte[] helloAck) throws ParsingException.JSONUnParsingException {
+        HelloAckMessage ret;
         try{
 
             ret = mapper.readValue(new String(helloAck, 0, helloAck.length), HelloAckMessage.class);
-        }  catch (JsonGenerationException e) {
-
-            e.printStackTrace();
-
-        } catch (JsonMappingException e) {
-
-            e.printStackTrace();
-
-        } catch (IOException e) {
-
-            e.printStackTrace();
-
+        }catch (Exception e) {
+            throw new ParsingException.JSONUnParsingException("Error unserializing HelloAck message", e);
         }
         return ret;
     }
 
     @Override
-    public MessMessage deserializedMessMessage(byte[] mess) {
-        MessMessage ret = null;
+    public MessMessage deserializedMessMessage(byte[] mess) throws ParsingException.JSONUnParsingException {
+        MessMessage ret;
         try{
 
             ret = mapper.readValue(new String(mess,0, mess.length), MessMessage.class);
-        }  catch (JsonGenerationException e) {
-
-            e.printStackTrace();
-
-        } catch (JsonMappingException e) {
-
-            e.printStackTrace();
-
-        } catch (IOException e) {
-
-            e.printStackTrace();
-
+        }catch (Exception e) {
+            throw new ParsingException.JSONUnParsingException("Error unserializing Mess (data) message", e);
         }
         return ret;
     }
 
     @Override
-    public MessAckMessage deserializedMessAckMessage(byte[] messAck) {
-        MessAckMessage ret = null;
+    public MessAckMessage deserializedMessAckMessage(byte[] messAck) throws ParsingException.JSONUnParsingException {
+        MessAckMessage ret;
         try{
 
             ret = mapper.readValue(new String(messAck, 0, messAck.length), MessAckMessage.class);
-        }  catch (JsonGenerationException e) {
-
-            e.printStackTrace();
-
-        } catch (JsonMappingException e) {
-
-            e.printStackTrace();
-
-        } catch (IOException e) {
-
-            e.printStackTrace();
-
+        } catch (Exception e) {
+            throw new ParsingException.JSONUnParsingException("Error unserializing Mess ack message", e);
         }
         return ret;
     }
 
     @Override
-    public GoodbyeMessage deserializedGoodbyeMessage(byte[] bye) {
-        GoodbyeMessage ret = null;
+    public GoodbyeMessage deserializedGoodbyeMessage(byte[] bye) throws ParsingException.JSONUnParsingException {
+        GoodbyeMessage ret;
         try{
 
             ret = mapper.readValue(new String(bye, 0, bye.length), GoodbyeMessage.class);
-        }  catch (JsonGenerationException e) {
-
-            e.printStackTrace();
-
-        } catch (JsonMappingException e) {
-
-            e.printStackTrace();
-
-        } catch (IOException e) {
-
-            e.printStackTrace();
-
+        } catch (Exception e) {
+            throw new ParsingException.JSONUnParsingException("Error unserializing Goodbye message", e);
         }
         return ret;
     }
 
     @Override
-    public MessageType getType(byte[] parsedString) throws IOException {
-        MessageType type = null;
+    public MessageType getType(byte[] parsedString) throws ParsingException.JSONUnParsingException {
+        MessageType type;
         try {
-            Map<String, String> map = mapper.readValue(new String(parsedString,0, parsedString.length), Map.class);
+            Map map = mapper.readValue(new String(parsedString, 0, parsedString.length), Map.class);
             type = MessageType.fromString(map.get("type"));
-        } catch (JsonGenerationException e) {
-
-            e.printStackTrace();
-
-        } catch (JsonMappingException e) {
-
-            e.printStackTrace();
-
-        } catch (IOException e) {
-
-            e.printStackTrace();
-
+        }catch (Exception e) {
+            throw new ParsingException.JSONUnParsingException("Error trying to parse the string message", e);
         }
         return type;
     }
