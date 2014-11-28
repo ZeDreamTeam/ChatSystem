@@ -11,6 +11,7 @@ import java.net.SocketException;
  * Created by MagicMicky on 28/11/2014.
  */
 public class UdpReceiver extends Thread {
+    private boolean shouldRun = true;
     private final ChatNI chatNi;
     private final DatagramPacket datagramPacket;
     private final byte[] buffer;
@@ -23,7 +24,7 @@ public class UdpReceiver extends Thread {
     }
     @Override
     public void run() {
-        while(true) {
+        while(shouldRun) {
             try {
                 receiveSocket.receive(datagramPacket);
                 String message = new String(buffer, 0, datagramPacket.getLength());
@@ -32,5 +33,9 @@ public class UdpReceiver extends Thread {
                 e.printStackTrace();
             }
         }
+        receiveSocket.close();
+    }
+    public void setShouldRun(boolean shouldRun){
+        this.shouldRun = shouldRun;
     }
 }
