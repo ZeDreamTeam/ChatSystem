@@ -15,7 +15,7 @@ public enum MessageType {
         return s;
     }
 
-    public static MessageType fromString(String type){
+    public static MessageType fromString(Object type){
         if(type.equals("hello")){
             return hello;
         } else if (type.equals("helloAck")){
