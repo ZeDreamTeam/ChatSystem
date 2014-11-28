@@ -1,7 +1,11 @@
 package messages;
 
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import data.*;
 import messages.data.*;
+
+import java.io.IOException;
 
 /**
  * Created by djemaa on 28/11/14.
@@ -17,6 +21,8 @@ public abstract class MessageFactory {
                 return null;
         }
     }
+
+
     public abstract AbstractHelloMessage serializedHelloMessage(HelloMessage hello);
     public abstract AbstractHelloAckMessage serializedHelloAckMessage(HelloAckMessage helloAck);
     public abstract AbstractMessMessage serializedMessMessage(MessMessage mess);
@@ -27,6 +33,8 @@ public abstract class MessageFactory {
     public abstract MessMessage deserializedMessMessage(AbstractMessMessage mess);
     public abstract MessAckMessage deserializedMessAckMessage(AbstractMessAckMessage messAck);
     public abstract GoodbyeMessage deserializedGoodbyeMessage(AbstractGoodbyeMessage bye);
+
+    public abstract MessageType getType(String parsedString) throws IOException;
 
 
 }
