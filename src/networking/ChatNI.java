@@ -20,10 +20,10 @@ public class ChatNI {
         this.udpReceiver = new UdpReceiver(this);
         this.udpSender = new UdpSender();
     }
-    public void performSendHello(HelloMessage helloMessage, User user) throws IOException {
+    public void performSendHello(HelloMessage helloMessage) throws IOException {
         AbstractHelloMessage message = factory.serializedHelloMessage(helloMessage);
         byte[] messageBytes = message.toString().getBytes();
-        this.udpSender.send(messageBytes, user.getIp());
+        this.udpSender.sendBroadcast(messageBytes);
 
     }
 
