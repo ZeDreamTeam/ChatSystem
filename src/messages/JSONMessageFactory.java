@@ -3,9 +3,7 @@ package messages;
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
-import data.HelloAckMessage;
-import data.HelloMessage;
-import data.Message;
+import data.*;
 import messages.data.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -73,10 +71,52 @@ public class JSONMessageFactory extends MessageFactory {
     }
 
     @Override
-    public AbstractMessMessage serializedMessMessage(Message mess) {
+    public AbstractMessMessage serializedMessMessage(MessMessage mess) {
         AbstractMessMessage ret = null;
         try {
             ret = new JSONMessMessage(mapper.writeValueAsString(mess));
+        }catch (JsonGenerationException e) {
+
+            e.printStackTrace();
+
+        } catch (JsonMappingException e) {
+
+            e.printStackTrace();
+
+        } catch (IOException e) {
+
+            e.printStackTrace();
+
+        }
+        return ret;
+    }
+
+    @Override
+    public AbstractMessAckMessage serializedMessAckMessage(MessAckMessage messAck) {
+        AbstractMessAckMessage ret = null;
+        try {
+            ret = new JSONMessAckMessage(mapper.writeValueAsString(messAck));
+        }catch (JsonGenerationException e) {
+
+            e.printStackTrace();
+
+        } catch (JsonMappingException e) {
+
+            e.printStackTrace();
+
+        } catch (IOException e) {
+
+            e.printStackTrace();
+
+        }
+        return ret;
+    }
+
+    @Override
+    public AbstractGoodbyeMessage serializedGoodbyeMessage(GoodbyeMessage bye) {
+        AbstractGoodbyeMessage ret = null;
+        try {
+            ret = new JSONGoodbyeMessage(mapper.writeValueAsString(bye));
         }catch (JsonGenerationException e) {
 
             e.printStackTrace();
@@ -138,11 +178,55 @@ public class JSONMessageFactory extends MessageFactory {
     }
 
     @Override
-    public Message deserializedMessMessage(AbstractMessMessage mess) {
-        Message ret = null;
+    public MessMessage deserializedMessMessage(AbstractMessMessage mess) {
+        MessMessage ret = null;
         try{
 
-            ret = mapper.readValue(mess.toString(), Message.class);
+            ret = mapper.readValue(mess.toString(), MessMessage.class);
+        }  catch (JsonGenerationException e) {
+
+            e.printStackTrace();
+
+        } catch (JsonMappingException e) {
+
+            e.printStackTrace();
+
+        } catch (IOException e) {
+
+            e.printStackTrace();
+
+        }
+        return ret;
+    }
+
+    @Override
+    public MessAckMessage deserializedMessAckMessage(AbstractMessAckMessage messAck) {
+        MessAckMessage ret = null;
+        try{
+
+            ret = mapper.readValue(messAck.toString(), MessAckMessage.class);
+        }  catch (JsonGenerationException e) {
+
+            e.printStackTrace();
+
+        } catch (JsonMappingException e) {
+
+            e.printStackTrace();
+
+        } catch (IOException e) {
+
+            e.printStackTrace();
+
+        }
+        return ret;
+    }
+
+    @Override
+    public GoodbyeMessage deserializedGoodbyeMessage(AbstractGoodbyeMessage bye) {
+        GoodbyeMessage ret = null;
+        try{
+
+            ret = mapper.readValue(bye.toString(), GoodbyeMessage.class);
         }  catch (JsonGenerationException e) {
 
             e.printStackTrace();

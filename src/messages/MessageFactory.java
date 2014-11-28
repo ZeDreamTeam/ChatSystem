@@ -1,11 +1,7 @@
 package messages;
 
-import data.HelloAckMessage;
-import data.HelloMessage;
-import data.Message;
-import messages.data.AbstractHelloAckMessage;
-import messages.data.AbstractHelloMessage;
-import messages.data.AbstractMessMessage;
+import data.*;
+import messages.data.*;
 
 /**
  * Created by djemaa on 28/11/14.
@@ -23,10 +19,14 @@ public abstract class MessageFactory {
     }
     public abstract AbstractHelloMessage serializedHelloMessage(HelloMessage hello);
     public abstract AbstractHelloAckMessage serializedHelloAckMessage(HelloAckMessage helloAck);
-    public abstract AbstractMessMessage serializedMessMessage(Message mess);
+    public abstract AbstractMessMessage serializedMessMessage(MessMessage mess);
+    public abstract AbstractMessAckMessage serializedMessAckMessage(MessAckMessage messAck);
+    public abstract AbstractGoodbyeMessage serializedGoodbyeMessage(GoodbyeMessage bye);
     public abstract HelloMessage deserializedHelloMessage(AbstractHelloMessage hello);
     public abstract HelloAckMessage deserializedHelloAckMessage(AbstractHelloAckMessage helloAck);
-    public abstract Message deserializedMessMessage(AbstractMessMessage mess);
+    public abstract MessMessage deserializedMessMessage(AbstractMessMessage mess);
+    public abstract MessAckMessage deserializedMessAckMessage(AbstractMessAckMessage messAck);
+    public abstract GoodbyeMessage deserializedGoodbyeMessage(AbstractGoodbyeMessage bye);
 
 
 }
