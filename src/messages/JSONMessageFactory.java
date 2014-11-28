@@ -137,11 +137,11 @@ public class JSONMessageFactory extends MessageFactory {
     }
 
     @Override
-    public HelloMessage deserializedHelloMessage(AbstractHelloMessage hello) {
+    public HelloMessage deserializedHelloMessage(byte[] hello) {
         HelloMessage ret = null;
         try{
 
-            ret = mapper.readValue(hello.toString(), HelloMessage.class);
+            ret = mapper.readValue(new String(hello,0, hello.length), HelloMessage.class);
         }  catch (JsonGenerationException e) {
 
             e.printStackTrace();
@@ -159,11 +159,11 @@ public class JSONMessageFactory extends MessageFactory {
     }
 
     @Override
-    public HelloAckMessage deserializedHelloAckMessage(AbstractHelloAckMessage helloAck) {
+    public HelloAckMessage deserializedHelloAckMessage(byte[] helloAck) {
         HelloAckMessage ret = null;
         try{
 
-            ret = mapper.readValue(helloAck.toString(), HelloAckMessage.class);
+            ret = mapper.readValue(new String(helloAck, 0, helloAck.length), HelloAckMessage.class);
         }  catch (JsonGenerationException e) {
 
             e.printStackTrace();
@@ -181,11 +181,11 @@ public class JSONMessageFactory extends MessageFactory {
     }
 
     @Override
-    public MessMessage deserializedMessMessage(AbstractMessMessage mess) {
+    public MessMessage deserializedMessMessage(byte[] mess) {
         MessMessage ret = null;
         try{
 
-            ret = mapper.readValue(mess.toString(), MessMessage.class);
+            ret = mapper.readValue(new String(mess,0, mess.length), MessMessage.class);
         }  catch (JsonGenerationException e) {
 
             e.printStackTrace();
@@ -203,11 +203,11 @@ public class JSONMessageFactory extends MessageFactory {
     }
 
     @Override
-    public MessAckMessage deserializedMessAckMessage(AbstractMessAckMessage messAck) {
+    public MessAckMessage deserializedMessAckMessage(byte[] messAck) {
         MessAckMessage ret = null;
         try{
 
-            ret = mapper.readValue(messAck.toString(), MessAckMessage.class);
+            ret = mapper.readValue(new String(messAck, 0, messAck.length), MessAckMessage.class);
         }  catch (JsonGenerationException e) {
 
             e.printStackTrace();
@@ -225,11 +225,11 @@ public class JSONMessageFactory extends MessageFactory {
     }
 
     @Override
-    public GoodbyeMessage deserializedGoodbyeMessage(AbstractGoodbyeMessage bye) {
+    public GoodbyeMessage deserializedGoodbyeMessage(byte[] bye) {
         GoodbyeMessage ret = null;
         try{
 
-            ret = mapper.readValue(bye.toString(), GoodbyeMessage.class);
+            ret = mapper.readValue(new String(bye, 0, bye.length), GoodbyeMessage.class);
         }  catch (JsonGenerationException e) {
 
             e.printStackTrace();
@@ -247,10 +247,10 @@ public class JSONMessageFactory extends MessageFactory {
     }
 
     @Override
-    public MessageType getType(String parsedString) throws IOException {
+    public MessageType getType(byte[] parsedString) throws IOException {
         MessageType type = null;
         try {
-            Map<String, String> map = mapper.readValue(parsedString, Map.class);
+            Map<String, String> map = mapper.readValue(new String(parsedString,0, parsedString.length), Map.class);
             type = MessageType.fromString(map.get("type"));
         } catch (JsonGenerationException e) {
 

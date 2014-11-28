@@ -26,8 +26,7 @@ public class UdpReceiver extends Thread {
         while(true) {
             try {
                 receiveSocket.receive(datagramPacket);
-                String message = new String(buffer, 0, datagramPacket.getLength());
-                chatNi.doReceive(message);
+                chatNi.doReceive(buffer);
             } catch (IOException e) {
                 e.printStackTrace();
             }

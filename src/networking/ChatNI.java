@@ -48,8 +48,23 @@ public class ChatNI {
 
     }
 
-    public void doReceive(String message) {
-        //TODO: retrieve type
-        //TODO: unparse Message
+    public void doReceive(byte[] bytes) throws IOException {
+        MessageType type = factory.getType(bytes);
+        switch(type) {
+            case hello:
+                HelloMessage mess = factory.deserializedHelloMessage(bytes);
+                break;
+            case helloAck:
+                HelloAckMessage helloAck = factory.deserializedHelloAckMessage(bytes);
+            case goodBye:
+                GoodbyeMessage gbmess = factory.deserializedGoodbyeMessage(bytes);
+                break;
+            case message:
+                MessMessage message = factory.deserializedMessMessage(bytes);
+                break;
+            case messageAck:
+                MessAckMessage messageAck = factory.deserializedMessAckMessage(bytes);
+                break;
+        }
     }
 }

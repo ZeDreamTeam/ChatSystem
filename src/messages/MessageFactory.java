@@ -28,13 +28,13 @@ public abstract class MessageFactory {
     public abstract AbstractMessMessage serializedMessMessage(MessMessage mess);
     public abstract AbstractMessAckMessage serializedMessAckMessage(MessAckMessage messAck);
     public abstract AbstractGoodbyeMessage serializedGoodbyeMessage(GoodbyeMessage bye);
-    public abstract HelloMessage deserializedHelloMessage(AbstractHelloMessage hello);
-    public abstract HelloAckMessage deserializedHelloAckMessage(AbstractHelloAckMessage helloAck);
-    public abstract MessMessage deserializedMessMessage(AbstractMessMessage mess);
-    public abstract MessAckMessage deserializedMessAckMessage(AbstractMessAckMessage messAck);
-    public abstract GoodbyeMessage deserializedGoodbyeMessage(AbstractGoodbyeMessage bye);
+    public abstract HelloMessage deserializedHelloMessage(byte[] hello);
+    public abstract HelloAckMessage deserializedHelloAckMessage(byte[] helloAck);
+    public abstract MessMessage deserializedMessMessage(byte[] mess);
+    public abstract MessAckMessage deserializedMessAckMessage(byte[] messAck);
+    public abstract GoodbyeMessage deserializedGoodbyeMessage(byte[] bye);
 
-    public abstract MessageType getType(String parsedString) throws IOException;
+    public abstract MessageType getType(byte[] message) throws IOException;
 
 
 }
