@@ -1,5 +1,6 @@
 package networking;
 
+import data.HelloAckMessage;
 import data.HelloMessage;
 
 /**
@@ -14,7 +15,9 @@ public class ChatNI {
         //TODO : parser helloMessage
     }
 
-
+    public void performSendHelloAck(HelloAckMessage helloAckMessage) {
+        //TODO
+    }
     public void doReceive(String message) {
         //TODO: retrieve type
         //TODO: unparse Message
