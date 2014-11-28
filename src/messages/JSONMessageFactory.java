@@ -15,7 +15,7 @@ import java.util.Map;
  * Created by djemaa on 28/11/14.
  */
 public class JSONMessageFactory extends MessageFactory {
-    ObjectMapper mapper =  new ObjectMapper();
+    private ObjectMapper mapper =  new ObjectMapper();
     private static JSONMessageFactory instance = null;
 
 

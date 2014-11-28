@@ -4,7 +4,7 @@ package data;
  * Created by MagicMicky on 28/11/2014.
  */
 public enum MessageType {
-    Hello("hello"),HelloAck("helloAck"), Mess("message"), MessAck("messageAck"), Goodbye("goodBye");
+    hello("hello"),helloAck("helloAck"), message("message"), messageAck("messageAck"), goodBye("goodBye");
     private String s;
     MessageType(String s) {
         this.s = s;
@@ -17,15 +17,15 @@ public enum MessageType {
 
     public static MessageType fromString(String type){
         if(type.equals("hello")){
-            return Hello;
+            return hello;
         } else if (type.equals("helloAck")){
-            return HelloAck;
+            return helloAck;
         } else if (type.equals("message")){
-            return Mess;
+            return message;
         } else if (type.equals("messageAck")){
-            return MessAck;
+            return messageAck;
         } else if (type.equals("goodBye")){
-            return Goodbye;
+            return goodBye;
         }
         return null;
     }
