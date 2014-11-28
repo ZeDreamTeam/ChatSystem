@@ -15,4 +15,8 @@ public class ChatNI {
     }
 
 
+    public void doReceive(String message) {
+        //TODO: retrieve type
+        //TODO: unparse Message
+    }
 }
