@@ -2,21 +2,38 @@ package networking;
 
 import data.*;
 import messages.MessageFactory;
+import messages.data.AbstractHelloAckMessage;
+import messages.data.AbstractHelloMessage;
+
+import java.io.IOException;
+import java.net.SocketException;
 
 /**
  * Created by MagicMicky on 28/11/2014.
  */
 public class ChatNI {
-    private MessageFactory factory;
-    public ChatNI() {
+    private final UdpSender udpSender;
+    private final UdpReceiver udpReceiver;
+    private final MessageFactory factory;
+    public ChatNI() throws SocketException {
+        factory = MessageFactory.getFactory(MessageFactory.Type.JSON);
+        this.udpReceiver = new UdpReceiver(this);
+        this.udpSender = new UdpSender();
     }
-    public void performSendHello(HelloMessage helloMessage) {
-        //TODO : parser helloMessage
+    public void performSendHello(HelloMessage helloMessage, User user) throws IOException {
+        AbstractHelloMessage message = factory.serializedHelloMessage(helloMessage);
+        byte[] messageBytes = message.toString().getBytes();
+        this.udpSender.send(messageBytes, user.getIp());
+
     }
 
-    public void performSendHelloAck(HelloAckMessage helloAckMessage) {
-        //TODO
+    public void performSendHelloAck(HelloAckMessage helloAckMessage, User user) throws IOException {
+        AbstractHelloAckMessage helloAck = factory.serializedHelloAckMessage(helloAckMessage);
+        byte[] messageBytes = helloAck.toString().getBytes();
+        this.udpSender.send(messageBytes, user.getIp());
     }
+
+
 
     public void performSendGoodbyeMessage(GoodbyeMessage message) {
         //TODO
