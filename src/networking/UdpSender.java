@@ -13,6 +13,13 @@ public class UdpSender {
 
     }
 
+    public void sendBroadcast(byte[] bytes) throws IOException {
+        DatagramSocket socket = new DatagramSocket(Conf.PORT, InetAddress.getByName("255.255.255.255"));
+        socket.setBroadcast(true);
+        DatagramPacket packet = new DatagramPacket(bytes,bytes.length);
+        socket.send(packet);
+    }
+
     public void send(byte[] bytes, String ip) throws IOException {
         InetAddress address = InetAddress.getByName(ip);
         DatagramPacket packet = new DatagramPacket(bytes,bytes.length, address, Conf.PORT);
