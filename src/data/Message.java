@@ -5,5 +5,5 @@ package data;
  */
 public abstract class Message {
 
-    public abstract String getType();//TODO change to enum type
+    public abstract MessageType getType();
 }
