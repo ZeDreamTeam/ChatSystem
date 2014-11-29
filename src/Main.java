@@ -1,6 +1,8 @@
 import data.HelloAckMessage;
 import data.HelloMessage;
+import data.User;
 import networking.ChatNI;
+import networking.NetworkingException;
 
 import java.io.IOException;
 import java.net.SocketException;
@@ -11,12 +13,11 @@ import java.net.SocketException;
 public class Main {
     public static void main(String[] params){
         try{
-            ChatNI ni = new ChatNI();
+            User me = new User();
+            Controller controller = new Controller();
             HelloMessage hello = new HelloMessage("bonjoursalutcestmoiestcequeyaqq?");
             ni.performSendHello(hello);
-        } catch(SocketException e){
-            e.printStackTrace();
-        } catch (IOException e) {
+        } catch (NetworkingException.ReceivingException e) {
             e.printStackTrace();
         }
         while (true){

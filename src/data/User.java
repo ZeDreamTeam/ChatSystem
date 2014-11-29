@@ -10,11 +10,13 @@ public class User {
     private final String name;
     private final String ip;
     private final List<HistMessage> messages;
+    private boolean connected;
 
     public User(String name, String ip) {
         this.name = name;
         this.ip = ip;
         this.messages = new ArrayList<HistMessage>();
+        this.connected = true;
     }
 
     public String getName() {
@@ -27,5 +29,15 @@ public class User {
 
     public List<HistMessage> getMessages() {
         return messages;
+    }
+    public void addMessage(HistMessage message){
+        messages.add(message);
+    }
+
+    public boolean isConnected() {
+        return connected;
+    }
+    public void setConnected(boolean connected){
+        this.connected = connected;
     }
 }

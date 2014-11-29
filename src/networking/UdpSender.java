@@ -16,9 +16,11 @@ public class UdpSender {
 
     }
 
-    public void sendBroadcast(byte[] bytes) throws NetworkingException.SendingException{
+    public String sendBroadcast(byte[] bytes) throws NetworkingException.SendingException{
+        String myAdress = null;
         try {
             DatagramSocket socket = new DatagramSocket(/*Conf.PORT, InetAddress.getByName("255.255.255.255")*/);
+            myAdress = socket.getLocalAddress().getHostAddress();
             socket.setBroadcast(true);
             DatagramPacket packet = new DatagramPacket(bytes,bytes.length, InetAddress.getByName("255.255.255.255"), Conf.PORT);
             socket.send(packet);
@@ -26,6 +28,7 @@ public class UdpSender {
         } catch (IOException e) {
             throw new NetworkingException.SendingException("Error sending a broadcast message", e);
         }
+        return myAdress;
     }
 
     public void send(byte[] bytes, String ip) throws SendingException {
