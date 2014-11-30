@@ -4,13 +4,8 @@ import controller.Controller;
 import data.*;
 import messages.MessageFactory;
 import messages.ParsingException;
-import messages.data.AbstractGoodbyeMessage;
-import messages.data.AbstractHelloAckMessage;
-import messages.data.AbstractHelloMessage;
+import messages.data.*;
 
-import java.io.IOException;
-import java.net.InetAddress;
-import java.net.SocketException;
 
 /**
  * Created by MagicMicky on 28/11/2014.
@@ -20,6 +15,8 @@ public class ChatNI {
     private final UdpSender udpSender;
     private final UdpReceiver udpReceiver;
     private final MessageFactory factory;
+
+
     public ChatNI(Controller contr) throws NetworkingException.ReceivingException {
         controller = contr;
         factory = MessageFactory.getFactory(MessageFactory.Type.JSON);
@@ -28,11 +25,10 @@ public class ChatNI {
         udpReceiver.start();
     }
     public String performSendHello(HelloMessage helloMessage) {
-        AbstractHelloMessage message = null;
         String myAdress = null;
         try {
-            message = factory.serializedHelloMessage(helloMessage);
-            byte[] messageBytes = message.toString().getBytes();
+            AbstractHelloMessage hello = factory.serializedHelloMessage(helloMessage);
+            byte[] messageBytes = hello.toString().getBytes();
             myAdress = this.udpSender.sendBroadcast(messageBytes);
         } catch (ParsingException e) {
             e.printStackTrace();
@@ -43,9 +39,8 @@ public class ChatNI {
     }
 
     public void performSendHelloAck(HelloAckMessage helloAckMessage, User user) {
-        AbstractHelloAckMessage helloAck = null;
         try {
-            helloAck = factory.serializedHelloAckMessage(helloAckMessage);
+            AbstractHelloAckMessage helloAck = factory.serializedHelloAckMessage(helloAckMessage);
             byte[] messageBytes = helloAck.toString().getBytes();
             this.udpSender.send(messageBytes, user.getIp());
         } catch (ParsingException e) {
@@ -57,13 +52,20 @@ public class ChatNI {
 
 
 
-    public void performSendGoodbyeMessage(GoodbyeMessage message) {
-        //TODO
+    public void performSendGoodbyeMessage(GoodbyeMessage goodbyeMessage) {
+        try{
+            AbstractGoodbyeMessage goodbye = factory.serializedGoodbyeMessage(goodbyeMessage);
+            byte[] messageBytes = goodbye.toString().getBytes();
+            this.udpSender.sendBroadcast(messageBytes);
+        } catch (ParsingException e) {
+            e.printStackTrace();
+        } catch (NetworkingException.SendingException e) {
+            e.printStackTrace();
+        }
     }
     public void performSTFU(GoodbyeMessage message, String ip){
-        AbstractGoodbyeMessage goodbye = null;
         try{
-            goodbye = factory.serializedGoodbyeMessage(message);
+            AbstractGoodbyeMessage goodbye = factory.serializedGoodbyeMessage(message);
             byte[] messageBytes = goodbye.toString().getBytes();
             this.udpSender.send(messageBytes, ip);
         } catch (NetworkingException.SendingException e) {
@@ -73,12 +75,29 @@ public class ChatNI {
         }
     }
 
-    public void performSendMessMessage(MessMessage message) {
+    public void performSendMessMessage(MessMessage messMessage, User user) {
+        try {
+            AbstractMessMessage message = factory.serializedMessMessage(messMessage);
+            byte[] messageBytes = message.toString().getBytes();
+            this.udpSender.send(messageBytes, user.getIp());
+        } catch (ParsingException e) {
+            e.printStackTrace();
+        } catch (NetworkingException.SendingException e) {
+            e.printStackTrace();
+        }
 
     }
 
-    public void performSendMessAckMessage(MessAckMessage message) {
-
+    public void performSendMessAckMessage(MessAckMessage messAckMessage, User user) {
+        try {
+            AbstractMessAckMessage messageAck = factory.serializedMessAckMessage(messAckMessage);
+            byte[] messageBytes = messageAck.toString().getBytes();
+            this.udpSender.send(messageBytes, user.getIp());
+        } catch (ParsingException e) {
+            e.printStackTrace();
+        } catch (NetworkingException.SendingException e) {
+            e.printStackTrace();
+        }
     }
     
     public void shutNI() {

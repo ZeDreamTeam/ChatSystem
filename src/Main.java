@@ -1,3 +1,4 @@
+import controller.Controller;
 import data.HelloAckMessage;
 import data.HelloMessage;
 import data.User;
@@ -12,16 +13,15 @@ import java.net.SocketException;
  */
 public class Main {
     public static void main(String[] params){
-        try{
-            User me = new User();
-            Controller controller = new Controller();
-            HelloMessage hello = new HelloMessage("bonjoursalutcestmoiestcequeyaqq?");
-            ni.performSendHello(hello);
-        } catch (NetworkingException.ReceivingException e) {
-            e.printStackTrace();
-        }
-        while (true){
 
-        }
+        Controller controller = new Controller();
+        controller.connect("toto");
+        User me = controller.getLocalUser();
+        System.out.println(me);
+        System.out.println(me.getMessages());
+        controller.sendMessMessage("toto toototo ", me);
+        System.out.println(me.getMessages());
+        controller.sendGoodbyeMessage();
+        System.out.println(me.isConnected());
     }
 }

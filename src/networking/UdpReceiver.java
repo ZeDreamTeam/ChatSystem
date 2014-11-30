@@ -33,7 +33,7 @@ public class UdpReceiver extends Thread {
         while(shouldRun) {
             try {
                 receiveSocket.receive(datagramPacket);
-                chatNi.doReceive(buffer);
+                chatNi.doReceive(buffer,datagramPacket.getAddress().getHostAddress());
             } catch (IOException e) {
                 e.printStackTrace();
             }

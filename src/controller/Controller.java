@@ -3,9 +3,6 @@ import data.*;
 import networking.ChatNI;
 import networking.NetworkingException;
 
-import java.io.IOException;
-import java.net.InetAddress;
-import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -17,7 +14,15 @@ public class Controller {
     private User localUser;
     private ArrayList<User> users;
 
+    public User getLocalUser() {
+        return localUser;
+    }
 
+    /**
+     * Constructor : init ni and users
+     * it doesn't init localUser because it doesn't knwow localAdress
+     * localAdress will be known after the connect()
+     */
     public Controller(){
         try{
             ni = new ChatNI(this);
@@ -26,83 +31,182 @@ public class Controller {
         }
         users = new ArrayList<User>();
     }
+
+    /**
+     * if CS doesn't know the ip (if there is no user with the same ip) :
+     * create and add user w/ (username inside the HelloMessage)
+     * send HelloAck
+     *
+     * @param hello ''
+     * @param ip ''
+     */
     public void receiveHelloMessage(HelloMessage hello, String ip){
         String uName = hello.getUserName();
         if(!exists(ip)){
-            User u = new User(uName, ip);
-            addUser(u);
-            sendHelloAck(u);
+            User user = new User(uName, ip);
+            addUser(new User(uName, ip));
+            sendHelloAckMessage(user);
         }
     }
 
 
-
+    /**
+     * if it doesn't knwow the ip :
+     * create and add user
+     * @param hello ''
+     * @param ip ''
+     */
     public void receiveHelloAckMessage(HelloAckMessage hello, String ip){
         String uName = hello.getUserName();
         if(!exists(ip)){
-            User u = new User(uName, ip);
-            addUser(u);
+            User user = new User(uName, ip);
+            addUser(user);
+            logMessage(hello, user, false);
         }
     }
+
+    /**
+     *
+     * @param messMessage ''
+     * @param ip ''
+     */
     public void receiveMessMessage(MessMessage messMessage, String ip){
+
         if(!exists(ip)){
             stfu(ip);
         } else{
-            HistMessage histMessage = new HistMessage(messMessage,false, new Date());
-            users.get(userPosition(ip)).addMessage(histMessage);
+            User user = users.get(userPosition(ip));
+            logMessage(messMessage, user, false);
+            sendMessAckMessage(messMessage.getMessageNumber(), user);
         }
     }
+
+
+
+    /**
+     *
+     * @param messAckMessage ''
+     * @param ip ''
+     */
     public void receiveMessAckMessage(MessAckMessage messAckMessage, String ip){
         if(!exists(ip)){
             stfu(ip);
         } else{
-            HistMessage histMessage = new HistMessage(messAckMessage, false, new Date());
-            users.get(userPosition(ip)).addMessage(histMessage);
+            logMessage(messAckMessage, users.get(userPosition(ip)), false);
         }
 
     }
+
+    /**
+     *
+     * @param goodbye ''
+     * @param ip ''
+     */
     public void receiveGoodbyeMessage(GoodbyeMessage goodbye, String ip){
         if(!exists(ip)){
             stfu(ip);
         } else{
-            HistMessage histMessage = new HistMessage(goodbye, false, new Date());
-            User remote = users.get(userPosition(ip));
-            remote.addMessage(histMessage);
-            remote.setConnected(false);
+            User user = users.get(userPosition(ip));
+            logMessage(goodbye, user, false);
+            user.setConnected(false);
 
         }
     }
 
-    private void connect(String uName){
-        HelloMessage hello = new HelloMessage(uName);
+    /**
+     * First connection with network, tells "hi" to everyone
+     * and set the localuser
+     * @param uName ''
+     */
+    public void connect(String uName){
         String myAdress;
-        myAdress = sendHello(uName);
-        User me = new User(uName, myAdress);
-        localUser = me;
-
+        myAdress = sendHelloMessage(uName);
+        localUser = new User(uName, myAdress);
     }
-    //return adress of local host
-    private String sendHello(String uName){
+
+
+    /**
+     * send hello to all and brings back user's local adress from the NI
+     * needed to instanciate localUser
+     *
+     * @param uName ''
+     * @return local adress as a String
+     */
+    private String sendHelloMessage(String uName){
         HelloMessage hello = new HelloMessage(uName);
         return ni.performSendHello(hello);
     }
 
-    private void sendHelloAck(User u) {
+    /**
+     *
+     * @param user to whom we send the HelloAck
+     */
+    private void sendHelloAckMessage(User user) {
         HelloAckMessage ack = new HelloAckMessage(localUser.getName());
-        ni.performSendHelloAck(ack, u);
+        logMessage(ack, user, true);
+        ni.performSendHelloAck(ack, user);
 
     }
 
+    /**
+     * log and send message to an user
+     * @param data ''
+     * @param user ''
+     */
+    public void sendMessMessage(String data, User user){
+        int rand = ((int) (Math.random()*100000));
+        if(rand != 0){
+            rand -=1 ;
+        }
+        MessMessage messMessage = new MessMessage(rand, data);
+        logMessage(messMessage, user, true);
+        ni.performSendMessMessage(messMessage, user);
+    }
+
+    /**
+     * log and send message ack to an user
+     * @param messageNumber ''
+     * @param user ''
+     */
+    private void sendMessAckMessage(int messageNumber, User user) {
+        MessAckMessage messAckMessage = new MessAckMessage(messageNumber);
+        logMessage(messAckMessage, user, true);
+        ni.performSendMessAckMessage(messAckMessage, user);
+    }
+
+    /**
+     * byebye everyone
+     */
+    public void sendGoodbyeMessage(){
+        GoodbyeMessage goodbyeMessage = new GoodbyeMessage();
+        logMessage(goodbyeMessage, localUser, true);
+        ni.performSendGoodbyeMessage(goodbyeMessage);
+    }
+
+    /**
+     * byebye ip
+     * @param ip ''
+     */
     public void stfu(String ip){
         GoodbyeMessage goodbyeMessage = new GoodbyeMessage();
         ni.performSTFU(goodbyeMessage, ip);
 
     }
 
+    /**
+     *
+     * @param ip ''
+     * @return true if user exists false otherwise
+     */
     private boolean exists(String ip){
         return userPosition(ip) != -1;
     }
 
+    /**
+     *
+     * @param ip ''
+     * @return the position of the user w/ this ip, -1 if it doesn't exists
+     */
     private int userPosition(String ip){
         int ret =-1;
         boolean found = false;
@@ -113,13 +217,25 @@ public class Controller {
                 break;
             }
         }
-        if(found == false){
+        if(!found){
             ret = -1;
         }
         return ret;
     }
     private void addUser(User u) {
         users.add(u);
+    }
+
+    /**
+     * Log the message in the messages ArrayList of the user
+     *
+     * @param mess ''
+     * @param user ''
+     * @param iAmSender specify the direction of the message (false = incoming, true = outgoing)
+     */
+    private void logMessage(Message mess, User user, boolean iAmSender){
+        HistMessage histMessage = new HistMessage(mess, iAmSender, new Date());
+        user.addMessage(histMessage);
     }
 
 

@@ -10,7 +10,6 @@ public class HelloMessage extends Message {
     public HelloMessage(String userName) {
         this.userName = userName;
     }
-
     public String getUserName() {
         return userName;
     }
