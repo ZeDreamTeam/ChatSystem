@@ -47,7 +47,7 @@ public class Controller {
         Logger.log("Received Hello message from " + hello.getUserName());
 
         String uName = hello.getUserName();
-        if(!exists(ip) && !ip.equals(localUser.getIp())){
+        if(!existsAndIsConnected(ip) && !ip.equals(localUser.getIp())){
             User user = new User(uName, ip);
             addUser(new User(uName, ip));
             sendHelloAckMessage(user);
@@ -65,7 +65,7 @@ public class Controller {
         Logger.log("Received Hello Ack from " + hello.getUserName());
 
         String uName = hello.getUserName();
-        if(!exists(ip)){
+        if(!existsAndIsConnected(ip)){
             User user = new User(uName, ip);
             addUser(user);
             logMessage(hello, user, false);
@@ -78,7 +78,7 @@ public class Controller {
      * @param ip ''
      */
     public void receiveMessMessage(MessMessage messMessage, String ip){
-        if(!exists(ip)){
+        if(!existsAndIsConnected(ip)){
             stfu(ip);
         } else{
             User user = getUser(ip);
@@ -96,11 +96,11 @@ public class Controller {
      * @param ip ''
      */
     public void receiveMessAckMessage(MessAckMessage messAckMessage, String ip){
-        if(!exists(ip)){
+        if(!existsAndIsConnected(ip)){
             stfu(ip);
         } else{
             User user = getUser(ip);
-            Logger.log("Received Mess  (" + messAckMessage.getMessageNumber() + ") from " +user.getName());
+            Logger.log("Received Mess  (" + messAckMessage.getMessageNumber() + ") from " + user.getName());
 
             logMessage(messAckMessage, user, false);
         }
@@ -219,11 +219,20 @@ public class Controller {
     }
 
     /**
+     * Check if a user exists
+     * @param ip
+     * @return
+     */
+    private boolean exists(String ip) {
+        return getUser(ip) != null;
+    }
+
+    /**
      *
      * @param ip ''
-     * @return true if user exists false otherwise
+     * @return true if user exists & is connected false otherwise
      */
-    private boolean exists(String ip){
+    private boolean existsAndIsConnected(String ip){
         User user = getUser(ip);
         return (user != null) && user.isConnected() ;
     }
