@@ -3,6 +3,8 @@ import data.*;
 import networking.ChatNI;
 import networking.NetworkingException;
 
+import java.net.Inet4Address;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -42,11 +44,12 @@ public class Controller {
      */
     public void receiveHelloMessage(HelloMessage hello, String ip){
         String uName = hello.getUserName();
-        if(!exists(ip)){
+        if(!exists(ip) && !ip.equals(localUser.getIp())){
             User user = new User(uName, ip);
             addUser(new User(uName, ip));
             sendHelloAckMessage(user);
         }
+        System.out.println("Received Hello " + hello.getUserName());
     }
 
 
@@ -117,11 +120,12 @@ public class Controller {
      * First connection with network, tells "hi" to everyone
      * and set the localuser
      * @param uName ''
+     * @return the local user
      */
-    public void connect(String uName){
-        String myAdress;
-        myAdress = sendHelloMessage(uName);
-        localUser = new User(uName, myAdress);
+    public User connect(String uName) throws UnknownHostException {
+        sendHelloMessage(uName);
+        localUser = new User(uName, Inet4Address.getLocalHost().getHostAddress());
+        return localUser;
     }
 
 
@@ -132,9 +136,9 @@ public class Controller {
      * @param uName ''
      * @return local adress as a String
      */
-    private String sendHelloMessage(String uName){
+    private void sendHelloMessage(String uName){
         HelloMessage hello = new HelloMessage(uName);
-        return ni.performSendHello(hello);
+        ni.performSendHello(hello);
     }
 
     /**

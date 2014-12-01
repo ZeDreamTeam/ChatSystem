@@ -1,5 +1,6 @@
 package messages;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import data.*;
 import messages.data.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -89,8 +90,8 @@ public class JSONMessageFactory extends MessageFactory {
     public HelloMessage deserializedHelloMessage(byte[] hello) throws ParsingException.JSONUnParsingException {
         HelloMessage ret;
         try{
-
-            ret = mapper.readValue(new String(hello,0, hello.length), HelloMessage.class);
+            JsonNode root = mapper.readTree(hello);
+            ret = new HelloMessage(root.get(HelloMessage.FIELD_USERNAME).toString());
         }catch (Exception e) {
             throw new ParsingException.JSONUnParsingException("Error unserializing Hello message", e);
         }
@@ -101,8 +102,8 @@ public class JSONMessageFactory extends MessageFactory {
     public HelloAckMessage deserializedHelloAckMessage(byte[] helloAck) throws ParsingException.JSONUnParsingException {
         HelloAckMessage ret;
         try{
-
-            ret = mapper.readValue(new String(helloAck, 0, helloAck.length), HelloAckMessage.class);
+            JsonNode root = mapper.readTree(helloAck);
+            ret = new HelloAckMessage(root.get(HelloAckMessage.FIELD_USERNAME).toString());
         }catch (Exception e) {
             throw new ParsingException.JSONUnParsingException("Error unserializing HelloAck message", e);
         }

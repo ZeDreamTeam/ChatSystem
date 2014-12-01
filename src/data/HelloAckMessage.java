@@ -6,6 +6,7 @@ package data;
 public class HelloAckMessage extends Message{
     private final static MessageType type =MessageType.helloAck;
     private final String userName;
+    public final static String FIELD_USERNAME = "userName";
     public HelloAckMessage(String name) {
         this.userName=name;
     }

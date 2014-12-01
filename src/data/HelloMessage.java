@@ -5,6 +5,7 @@ package data;
  */
 public class HelloMessage extends Message {
     private static final MessageType type=MessageType.hello;//TODO: change to enum Type
+    public static final String FIELD_USERNAME = "userName";
     private final String userName;
 
     public HelloMessage(String userName) {

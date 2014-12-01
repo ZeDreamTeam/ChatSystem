@@ -24,18 +24,16 @@ public class ChatNI {
         this.udpSender = new UdpSender();
         udpReceiver.start();
     }
-    public String performSendHello(HelloMessage helloMessage) {
-        String myAdress = null;
+    public void performSendHello(HelloMessage helloMessage) {
         try {
             AbstractHelloMessage hello = factory.serializedHelloMessage(helloMessage);
             byte[] messageBytes = hello.toString().getBytes();
-            myAdress = this.udpSender.sendBroadcast(messageBytes);
+            this.udpSender.sendBroadcast(messageBytes);
         } catch (ParsingException e) {
             e.printStackTrace();
         } catch (NetworkingException.SendingException e) {
             e.printStackTrace();
         }
-        return myAdress;
     }
 
     public void performSendHelloAck(HelloAckMessage helloAckMessage, User user) {

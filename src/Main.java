@@ -7,6 +7,7 @@ import networking.NetworkingException;
 
 import java.io.IOException;
 import java.net.SocketException;
+import java.net.UnknownHostException;
 
 /**
  * Created by MagicMicky on 28/11/2014.
@@ -15,13 +16,11 @@ public class Main {
     public static void main(String[] params){
 
         Controller controller = new Controller();
-        controller.connect("toto");
-        User me = controller.getLocalUser();
-        System.out.println(me);
-        System.out.println(me.getMessages());
-        controller.sendMessMessage("toto toototo ", me);
-        System.out.println(me.getMessages());
-        controller.sendGoodbyeMessage();
-        System.out.println(me.isConnected());
+        try {
+            User u = controller.connect("toto");
+            System.out.println(u.getIp());
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
     }
 }
