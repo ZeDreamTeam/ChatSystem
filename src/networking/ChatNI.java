@@ -109,22 +109,27 @@ public class ChatNI {
                 case hello:
                     HelloMessage mess = factory.deserializedHelloMessage(bytes);
                     controller.receiveHelloMessage(mess, ip);
+                    System.out.println("Received Hello from " + mess.getUserName());
                     break;
                 case helloAck:
                     HelloAckMessage helloAck = factory.deserializedHelloAckMessage(bytes);
                     controller.receiveHelloAckMessage(helloAck, ip);
+                    System.out.println("Received HelloAck from " + helloAck.getUserName());
                     break;
                 case goodBye:
                     GoodbyeMessage gbmess = factory.deserializedGoodbyeMessage(bytes);
                     controller.receiveGoodbyeMessage(gbmess, ip);
+                    System.out.println("Received GB ");
                     break;
                 case message:
                     MessMessage message = factory.deserializedMessMessage(bytes);
                     controller.receiveMessMessage(message, ip);
+                    System.out.println("Received mess: " + message.getMessageData());
                     break;
                 case messageAck:
                     MessAckMessage messageAck = factory.deserializedMessAckMessage(bytes);
                     controller.receiveMessAckMessage(messageAck, ip);
+                    System.out.println("Received messageAck : " + messageAck.getMessageNumer());
                     break;
             }
         } catch (ParsingException e) {

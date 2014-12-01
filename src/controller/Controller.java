@@ -54,7 +54,7 @@ public class Controller {
 
 
     /**
-     * if it doesn't knwow the ip :
+     * if it doesn't know the ip :
      * create and add user
      * @param hello ''
      * @param ip ''

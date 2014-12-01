@@ -5,6 +5,8 @@ package data;
  */
 public class MessMessage extends Message{
     private final static MessageType type = MessageType.message;
+    public static final String FIELD_MESS_NUMBER = "messageNumber";
+    public static final String FIELD_MESS_DATA = "messageData";
     private final int messageNumber;
     private final String messageData;
 

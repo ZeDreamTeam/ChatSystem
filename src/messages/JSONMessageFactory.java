@@ -114,6 +114,8 @@ public class JSONMessageFactory extends MessageFactory {
     public MessMessage deserializedMessMessage(byte[] mess) throws ParsingException.JSONUnParsingException {
         MessMessage ret;
         try{
+            JsonNode root = mapper.readTree(mess);
+            ret = new MessMessage(root.get(MessMessage.FIELD_MESS_NUMBER).asInt(), root.get(MessMessage.FIELD_MESS_DATA).toString());
 
             ret = mapper.readValue(new String(mess,0, mess.length), MessMessage.class);
         }catch (Exception e) {
