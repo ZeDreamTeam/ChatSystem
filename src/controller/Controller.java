@@ -92,7 +92,7 @@ public class Controller {
             stfu(ip);
         } else{
             User user = getUser(ip);
-            Logger.log("Received Mess  (" + messMessage.getMessageData() + ") from " +user.getName());
+            Logger.log("Received Mess  (" + messMessage.getMessageData() + " - " + messMessage.getMessageNumber() + ") from " +user.getName());
             logMessage(messMessage, user, false);
             sendMessAckMessage(messMessage.getMessageNumber(), user);
         }
@@ -110,7 +110,7 @@ public class Controller {
             stfu(ip);
         } else{
             User user = getUser(ip);
-            Logger.log("Received Mess  (" + messAckMessage.getMessageNumber() + ") from " + user.getName());
+            Logger.log("Received MessAck  (" + messAckMessage.getMessageNumber() + ") from " + user.getName());
 
             logMessage(messAckMessage, user, false);
         }
