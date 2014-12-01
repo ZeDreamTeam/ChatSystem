@@ -27,7 +27,6 @@ public class Controller {
      * localAdress will be known after the connect()
      */
     public Controller(){
-        Logger.log("Controller()");
         try{
             ni = new ChatNI(this);
         } catch (NetworkingException.ReceivingException e){
@@ -45,14 +44,14 @@ public class Controller {
      * @param ip ''
      */
     public void receiveHelloMessage(HelloMessage hello, String ip){
-        Logger.log("Controller.receiveHelloMessage");
+        Logger.log("Received Hello message from " + hello.getUserName());
+
         String uName = hello.getUserName();
         if(!exists(ip) && !ip.equals(localUser.getIp())){
             User user = new User(uName, ip);
             addUser(new User(uName, ip));
             sendHelloAckMessage(user);
         }
-        System.out.println("Received Hello " + hello.getUserName());
     }
 
 
@@ -63,7 +62,8 @@ public class Controller {
      * @param ip ''
      */
     public void receiveHelloAckMessage(HelloAckMessage hello, String ip){
-        Logger.log("Controller.receiveHelloAckMessage");
+        Logger.log("Received Hello Ack from " + hello.getUserName());
+
         String uName = hello.getUserName();
         if(!exists(ip)){
             User user = new User(uName, ip);
@@ -78,11 +78,11 @@ public class Controller {
      * @param ip ''
      */
     public void receiveMessMessage(MessMessage messMessage, String ip){
-        Logger.log("Controller.receiveMessMessage");
         if(!exists(ip)){
             stfu(ip);
         } else{
-            User user = users.get(userPosition(ip));
+            User user = getUser(ip);
+            Logger.log("Received Mess  (" + messMessage.getMessageData() + ") from " +user.getName());
             logMessage(messMessage, user, false);
             sendMessAckMessage(messMessage.getMessageNumber(), user);
         }
@@ -96,11 +96,13 @@ public class Controller {
      * @param ip ''
      */
     public void receiveMessAckMessage(MessAckMessage messAckMessage, String ip){
-        Logger.log("Controller.receiveMessAckMessage");
         if(!exists(ip)){
             stfu(ip);
         } else{
-            logMessage(messAckMessage, users.get(userPosition(ip)), false);
+            User user = getUser(ip);
+            Logger.log("Received Mess  (" + messAckMessage.getMessageNumber() + ") from " +user.getName());
+
+            logMessage(messAckMessage, user, false);
         }
 
     }
@@ -111,11 +113,12 @@ public class Controller {
      * @param ip ''
      */
     public void receiveGoodbyeMessage(GoodbyeMessage goodbye, String ip){
-        Logger.log("Controller.receiveGoodbyeMessage");
         if(!exists(ip)){
             stfu(ip);
         } else{
-            User user = users.get(userPosition(ip));
+            User user = getUser(ip);
+            Logger.log("Received goodbye from " + user.getName());
+
             logMessage(goodbye, user, false);
             user.setConnected(false);
 
@@ -129,9 +132,9 @@ public class Controller {
      * @return the local user
      */
     public User connect(String uName) throws UnknownHostException {
-        Logger.log("Controller.connect w/ "+uName);
         sendHelloMessage(uName);
         localUser = new User(uName, Inet4Address.getLocalHost().getHostAddress());
+
         return localUser;
     }
 
@@ -144,9 +147,10 @@ public class Controller {
      * @return local adress as a String
      */
     private void sendHelloMessage(String uName){
-        Logger.log("Controller.sendHelloMessage");
         HelloMessage hello = new HelloMessage(uName);
         ni.performSendHello(hello);
+        Logger.log("Sending Hello to everyone ");
+
     }
 
     /**
@@ -154,10 +158,10 @@ public class Controller {
      * @param user to whom we send the HelloAck
      */
     private void sendHelloAckMessage(User user) {
-        Logger.log("Controller.sendHelloAckMessage");
         HelloAckMessage ack = new HelloAckMessage(localUser.getName());
         logMessage(ack, user, true);
         ni.performSendHelloAck(ack, user);
+        Logger.log("Sending helloAck to " + user.getName());
 
     }
 
@@ -167,7 +171,8 @@ public class Controller {
      * @param user ''
      */
     public void sendMessMessage(String data, User user){
-        Logger.log("Controller.sendMessMessage");
+        Logger.log("Sending message ( " + data + ") to " + user.getName());
+
         int rand = ((int) (Math.random()*100000));
         if(rand != 0){
             rand -=1 ;
@@ -175,6 +180,7 @@ public class Controller {
         MessMessage messMessage = new MessMessage(rand, data);
         logMessage(messMessage, user, true);
         ni.performSendMessMessage(messMessage, user);
+
     }
 
     /**
@@ -183,7 +189,7 @@ public class Controller {
      * @param user ''
      */
     private void sendMessAckMessage(int messageNumber, User user) {
-        Logger.log("Controller.sendMessAckMessage");
+        Logger.log("Sending ack to ( " + messageNumber + ") to " + user.getName());
         MessAckMessage messAckMessage = new MessAckMessage(messageNumber);
         logMessage(messAckMessage, user, true);
         ni.performSendMessAckMessage(messAckMessage, user);
@@ -193,7 +199,8 @@ public class Controller {
      * byebye everyone
      */
     public void sendGoodbyeMessage(){
-        Logger.log("Controller.sendGoodbyeMessage");
+        Logger.log("Sending GB !");
+
         GoodbyeMessage goodbyeMessage = new GoodbyeMessage();
         logMessage(goodbyeMessage, localUser, true);
         ni.performSendGoodbyeMessage(goodbyeMessage);
@@ -204,7 +211,8 @@ public class Controller {
      * @param ip ''
      */
     public void stfu(String ip){
-        Logger.log("Controller.stfu");
+        Logger.log("Sending GB to " + ip);
+
         GoodbyeMessage goodbyeMessage = new GoodbyeMessage();
         ni.performSTFU(goodbyeMessage, ip);
 
@@ -216,8 +224,8 @@ public class Controller {
      * @return true if user exists false otherwise
      */
     private boolean exists(String ip){
-        Logger.log("Controller.exists");
-        return userPosition(ip) != -1;
+        User user = getUser(ip);
+        return (user != null) && user.isConnected() ;
     }
 
     /**
@@ -225,24 +233,15 @@ public class Controller {
      * @param ip ''
      * @return the position of the user w/ this ip, -1 if it doesn't exists
      */
-    private int userPosition(String ip){
-        Logger.log("Controller.userPosition");
-        int ret =-1;
-        boolean found = false;
+    private User getUser(String ip){
         for(User u : users){
-            ret++;
             if(u.getIp().equals(ip)){
-                found = true;
-                break;
+                return u;
             }
         }
-        if(!found){
-            ret = -1;
-        }
-        return ret;
+        return null;
     }
     private void addUser(User u) {
-        Logger.log("Controller.addUser");
         users.add(u);
     }
 
@@ -254,7 +253,6 @@ public class Controller {
      * @param iAmSender specify the direction of the message (false = incoming, true = outgoing)
      */
     private void logMessage(Message mess, User user, boolean iAmSender){
-        Logger.log("Controller.logMessage");
         HistMessage histMessage = new HistMessage(mess, iAmSender, new Date());
         user.addMessage(histMessage);
     }

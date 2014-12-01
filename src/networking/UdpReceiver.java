@@ -19,7 +19,6 @@ public class UdpReceiver extends Thread {
     private boolean shouldRun;
 
     public UdpReceiver(ChatNI chatNi) throws NetworkingException.ReceivingException {
-        Logger.log("UdpReceiver");
         this.chatNi = chatNi;
         try {
             receiveSocket=new DatagramSocket(Conf.PORT);
@@ -32,7 +31,6 @@ public class UdpReceiver extends Thread {
     }
     @Override
     public void run() {
-        Logger.log("UdpReceiver.run");
         while(shouldRun) {
             try {
                 receiveSocket.receive(datagramPacket);

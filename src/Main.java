@@ -1,13 +1,6 @@
-import com.sun.media.jfxmedia.logging.Logger;
 import controller.Controller;
-import data.HelloAckMessage;
-import data.HelloMessage;
 import data.User;
-import networking.ChatNI;
-import networking.NetworkingException;
 
-import java.io.IOException;
-import java.net.SocketException;
 import java.net.UnknownHostException;
 
 /**
@@ -18,15 +11,17 @@ public class Main {
 
         Controller controller = new Controller();
         try {
-            User u = controller.connect("hugo");
+            User u = controller.connect("toto");
             System.out.println(u.getIp());
-            while(controller.getUsers().size() != 2){}
+            while(controller.getUsers().size() == 0){
+                System.out.println(controller.getUsers().size() + "");
+            }
             int wait = (int)(500+Math.random()*3000);
             Thread.sleep(wait);
-            controller.sendMessMessage("Salut c'est : "+controller.getLocalUser().getName(),controller.getUsers().get(1));
+            controller.sendMessMessage("Salut c'est : "+controller.getLocalUser().getName(),controller.getUsers().get(0));
              wait = (int)(500+Math.random()*3000);
             Thread.sleep(wait);
-            controller.stfu(controller.getUsers().get(1).getIp());
+            controller.stfu(controller.getUsers().get(0).getIp());
         } catch (UnknownHostException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {

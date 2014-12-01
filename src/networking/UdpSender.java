@@ -18,7 +18,6 @@ public class UdpSender {
     }
 
     public void sendBroadcast(byte[] bytes) throws NetworkingException.SendingException{
-        Logger.log("UdpSender");
         try {
             DatagramSocket socket = new DatagramSocket(/*Conf.PORT, InetAddress.getByName("255.255.255.255")*/);
             socket.setBroadcast(true);
@@ -31,7 +30,6 @@ public class UdpSender {
     }
 
     public void send(byte[] bytes, String ip) throws SendingException {
-        Logger.log("UdpSender.send");
         InetAddress address;
         try {
             address = InetAddress.getByName(ip);

@@ -17,7 +17,7 @@ public class MessAckMessage extends Message{
         return type;
     }
 
-    public int getMessageNumer() {
+    public int getMessageNumber() {
         return messageNumber;
     }
 }
