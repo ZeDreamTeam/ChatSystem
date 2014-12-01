@@ -47,10 +47,20 @@ public class Controller {
         Logger.log("Received Hello message from " + hello.getUserName());
 
         String uName = hello.getUserName();
-        if(!existsAndIsConnected(ip) && !ip.equals(localUser.getIp())){
+        if(!exists(ip) && !ip.equals(localUser.getIp())){
+            Logger.log("Creating user " + ip);
+
             User user = new User(uName, ip);
             addUser(new User(uName, ip));
             sendHelloAckMessage(user);
+        } else if (!existsAndIsConnected(ip) && !ip.equals(localUser.getIp())) {
+            Logger.log("Updating user " + ip);
+
+            User user = getUser(ip);
+            user.setConnected(true);
+            sendHelloAckMessage(user);
+
+            logMessage(hello, user, false);
         }
     }
 

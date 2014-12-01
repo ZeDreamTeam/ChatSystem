@@ -14,14 +14,13 @@ public class Main {
             User u = controller.connect("toto");
             System.out.println(u.getIp());
             while(controller.getUsers().size() == 0){
-                System.out.println(controller.getUsers().size() + "");
             }
             int wait = (int)(500+Math.random()*3000);
             Thread.sleep(wait);
             controller.sendMessMessage("Salut c'est : "+controller.getLocalUser().getName(),controller.getUsers().get(0));
              wait = (int)(500+Math.random()*3000);
             Thread.sleep(wait);
-            controller.stfu(controller.getUsers().get(0).getIp());
+            //controller.stfu(controller.getUsers().get(0).getIp());
         } catch (UnknownHostException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
