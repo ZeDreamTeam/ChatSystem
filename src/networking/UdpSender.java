@@ -1,6 +1,7 @@
 package networking;
 
 import utils.Conf;
+import utils.Logger;
 
 import javax.security.auth.login.Configuration;
 import java.io.IOException;
@@ -17,6 +18,7 @@ public class UdpSender {
     }
 
     public void sendBroadcast(byte[] bytes) throws NetworkingException.SendingException{
+        Logger.log("UdpSender");
         try {
             DatagramSocket socket = new DatagramSocket(/*Conf.PORT, InetAddress.getByName("255.255.255.255")*/);
             socket.setBroadcast(true);
@@ -29,7 +31,8 @@ public class UdpSender {
     }
 
     public void send(byte[] bytes, String ip) throws SendingException {
-        InetAddress address = null;
+        Logger.log("UdpSender.send");
+        InetAddress address;
         try {
             address = InetAddress.getByName(ip);
             DatagramPacket packet = new DatagramPacket(bytes,bytes.length, address, Conf.PORT);

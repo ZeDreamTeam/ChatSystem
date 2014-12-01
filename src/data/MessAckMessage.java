@@ -5,6 +5,7 @@ package data;
  */
 public class MessAckMessage extends Message{
     private final static MessageType type = MessageType.messageAck;
+    public static final String FIELD_MESSAGE_NUMBER = "messageNumber";
     private final int messageNumber;
 
     public MessAckMessage(int messageNumber) {

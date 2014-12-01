@@ -17,9 +17,18 @@ public class Main {
 
         Controller controller = new Controller();
         try {
-            User u = controller.connect("toto");
+            User u = controller.connect("nomUser");
             System.out.println(u.getIp());
+            while(controller.getUsers().size() != 2){}
+            int wait = (int)(500+Math.random()*3000);
+            Thread.sleep(wait);
+            controller.sendMessMessage("Salut c'est : "+controller.getLocalUser().getName(),controller.getUsers().get(1));
+             wait = (int)(500+Math.random()*3000);
+            Thread.sleep(wait);
+            controller.stfu(controller.getUsers().get(1).getIp());
         } catch (UnknownHostException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
             e.printStackTrace();
         }
     }

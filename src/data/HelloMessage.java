@@ -4,7 +4,7 @@ package data;
  * Created by MagicMicky on 28/11/2014.
  */
 public class HelloMessage extends Message {
-    private static final MessageType type=MessageType.hello;//TODO: change to enum Type
+    private static final MessageType type=MessageType.hello;
     public static final String FIELD_USERNAME = "userName";
     private final String userName;
 

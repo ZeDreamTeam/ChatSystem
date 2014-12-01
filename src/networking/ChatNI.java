@@ -5,6 +5,7 @@ import data.*;
 import messages.MessageFactory;
 import messages.ParsingException;
 import messages.data.*;
+import utils.Logger;
 
 
 /**
@@ -18,6 +19,7 @@ public class ChatNI {
 
 
     public ChatNI(Controller contr) throws NetworkingException.ReceivingException {
+        Logger.log("ChatNI");
         controller = contr;
         factory = MessageFactory.getFactory(MessageFactory.Type.JSON);
         this.udpReceiver = new UdpReceiver(this);
@@ -25,6 +27,7 @@ public class ChatNI {
         udpReceiver.start();
     }
     public void performSendHello(HelloMessage helloMessage) {
+        Logger.log("ChatNI.performSendHello");
         try {
             AbstractHelloMessage hello = factory.serializedHelloMessage(helloMessage);
             byte[] messageBytes = hello.toString().getBytes();
@@ -37,6 +40,7 @@ public class ChatNI {
     }
 
     public void performSendHelloAck(HelloAckMessage helloAckMessage, User user) {
+        Logger.log("ChatNI.performSendHelloAck");
         try {
             AbstractHelloAckMessage helloAck = factory.serializedHelloAckMessage(helloAckMessage);
             byte[] messageBytes = helloAck.toString().getBytes();
@@ -51,6 +55,7 @@ public class ChatNI {
 
 
     public void performSendGoodbyeMessage(GoodbyeMessage goodbyeMessage) {
+        Logger.log("ChatNI.performSendGoodbyeMessage");
         try{
             AbstractGoodbyeMessage goodbye = factory.serializedGoodbyeMessage(goodbyeMessage);
             byte[] messageBytes = goodbye.toString().getBytes();
@@ -62,6 +67,7 @@ public class ChatNI {
         }
     }
     public void performSTFU(GoodbyeMessage message, String ip){
+        Logger.log("ChatNI.performSTFU");
         try{
             AbstractGoodbyeMessage goodbye = factory.serializedGoodbyeMessage(message);
             byte[] messageBytes = goodbye.toString().getBytes();
@@ -74,6 +80,7 @@ public class ChatNI {
     }
 
     public void performSendMessMessage(MessMessage messMessage, User user) {
+        Logger.log("ChatNI.performSendMessMessage");
         try {
             AbstractMessMessage message = factory.serializedMessMessage(messMessage);
             byte[] messageBytes = message.toString().getBytes();
@@ -87,6 +94,7 @@ public class ChatNI {
     }
 
     public void performSendMessAckMessage(MessAckMessage messAckMessage, User user) {
+        Logger.log("ChatNI.performSendMessAckMessage");
         try {
             AbstractMessAckMessage messageAck = factory.serializedMessAckMessage(messAckMessage);
             byte[] messageBytes = messageAck.toString().getBytes();
@@ -99,9 +107,11 @@ public class ChatNI {
     }
     
     public void shutNI() {
+        Logger.log("ChatNI.shutNI");
         udpReceiver.setShouldRun(false);
     }
     public void doReceive(byte[] bytes,String ip) {
+        Logger.log("ChatNI.doReceive");
         MessageType type = null;
         try {
             type = factory.getType(bytes);

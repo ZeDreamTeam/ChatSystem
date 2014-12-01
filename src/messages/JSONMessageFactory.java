@@ -116,8 +116,6 @@ public class JSONMessageFactory extends MessageFactory {
         try{
             JsonNode root = mapper.readTree(mess);
             ret = new MessMessage(root.get(MessMessage.FIELD_MESS_NUMBER).asInt(), root.get(MessMessage.FIELD_MESS_DATA).toString());
-
-            ret = mapper.readValue(new String(mess,0, mess.length), MessMessage.class);
         }catch (Exception e) {
             throw new ParsingException.JSONUnParsingException("Error unserializing Mess (data) message", e);
         }
@@ -128,8 +126,8 @@ public class JSONMessageFactory extends MessageFactory {
     public MessAckMessage deserializedMessAckMessage(byte[] messAck) throws ParsingException.JSONUnParsingException {
         MessAckMessage ret;
         try{
-
-            ret = mapper.readValue(new String(messAck, 0, messAck.length), MessAckMessage.class);
+            JsonNode root = mapper.readTree(messAck);
+            ret = new MessAckMessage(root.get(MessAckMessage.FIELD_MESSAGE_NUMBER).asInt());
         } catch (Exception e) {
             throw new ParsingException.JSONUnParsingException("Error unserializing Mess ack message", e);
         }
@@ -140,8 +138,7 @@ public class JSONMessageFactory extends MessageFactory {
     public GoodbyeMessage deserializedGoodbyeMessage(byte[] bye) throws ParsingException.JSONUnParsingException {
         GoodbyeMessage ret;
         try{
-
-            ret = mapper.readValue(new String(bye, 0, bye.length), GoodbyeMessage.class);
+            ret = new GoodbyeMessage();
         } catch (Exception e) {
             throw new ParsingException.JSONUnParsingException("Error unserializing Goodbye message", e);
         }
