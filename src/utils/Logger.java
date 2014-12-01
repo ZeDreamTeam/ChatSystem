@@ -6,11 +6,10 @@ package utils;
 public class Logger {
 
 
-    private static boolean DEBUG = false;
 
 
     public static void log(String name){
-        if(DEBUG){
+        if(Conf.DEBUG){
             System.out.println("Log : "+ name);
         }
     }

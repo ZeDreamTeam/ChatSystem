@@ -1,3 +1,4 @@
+import com.sun.media.jfxmedia.logging.Logger;
 import controller.Controller;
 import data.HelloAckMessage;
 import data.HelloMessage;
@@ -17,7 +18,7 @@ public class Main {
 
         Controller controller = new Controller();
         try {
-            User u = controller.connect("nomUser");
+            User u = controller.connect("hugo");
             System.out.println(u.getIp());
             while(controller.getUsers().size() != 2){}
             int wait = (int)(500+Math.random()*3000);

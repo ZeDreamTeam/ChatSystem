@@ -5,4 +5,6 @@ package utils;
  */
 public class Conf {
     public static final int PORT = 1337;
+    public static boolean DEBUG = false;
+
 }
