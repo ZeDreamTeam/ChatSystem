@@ -76,6 +76,7 @@ public class Controller {
 
         String uName = hello.getUserName();
         if(!existsAndIsConnected(ip)){
+            Logger.log("Creating user " + ip);
             User user = new User(uName, ip);
             addUser(user);
             logMessage(hello, user, false);
@@ -181,12 +182,12 @@ public class Controller {
      * @param user ''
      */
     public void sendMessMessage(String data, User user){
-        Logger.log("Sending message ( " + data + ") to " + user.getName());
 
         int rand = ((int) (Math.random()*100000));
         if(rand != 0){
             rand -=1 ;
         }
+        Logger.log("Sending message ( " + data + " - " + rand+ ") to " + user.getName());
         MessMessage messMessage = new MessMessage(rand, data);
         logMessage(messMessage, user, true);
         ni.performSendMessMessage(messMessage, user);
