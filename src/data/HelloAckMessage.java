@@ -18,4 +18,9 @@ public class HelloAckMessage extends Message{
     public MessageType getType() {
         return type;
     }
+
+    @Override
+    public String toString() {
+        return null;
+    }
 }

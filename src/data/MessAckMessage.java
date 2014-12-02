@@ -17,6 +17,11 @@ public class MessAckMessage extends Message{
         return type;
     }
 
+    @Override
+    public String toString() {
+        return null;
+    }
+
     public int getMessageNumber() {
         return messageNumber;
     }

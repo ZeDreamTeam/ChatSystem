@@ -2,7 +2,10 @@ package gui;/**
  * Created by djemaa on 01/12/14.
  */
 
+import controller.Controller;
 import data.User;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
@@ -13,13 +16,20 @@ import java.util.ArrayList;
 
 public class ListUserLayout extends VBox {
     private static ListUserLayout instance = null;
-    private static final ObservableList<User> users =FXCollections.observableArrayList();
+    private final ObservableList<User> users;
     private ListView<User> list;
 
     private ListUserLayout(){
         super();
+        users = Controller.getUsers();
         list = new ListView<User>();
         list.setItems(users);
+        list.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<User>() {
+            @Override
+            public void changed(ObservableValue<? extends User> observable, User oldValue, User newValue) {
+                System.out.println("Selection : "+newValue);
+            }
+        });
         this.getChildren().add(list);
         list.setPrefSize(200, 600);
         this.setMargin(list, new Insets(75, 75, 0, 0));

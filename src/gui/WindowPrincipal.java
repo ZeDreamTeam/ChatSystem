@@ -72,10 +72,7 @@ public class WindowPrincipal extends Application {
         HistMessage h5 = new HistMessage(new MessAckMessage(23), true,new Date());
 
         tab1.add(h1);
-        tab1.add(h2);
-        tab1.add(h3);
-        tab1.add(h4);
-        tab1.add(h5);
+
 
         tabo.getTabs().add(tab2);
         primaryStage.setTitle("ChatSystem!");
@@ -84,6 +81,10 @@ public class WindowPrincipal extends Application {
         primaryStage.show();
         ConversationTab tab3 = new ConversationTab(u3);
         tabo.getTabs().add(tab3);
+        tab2.add(h2);
+        tab3.add(h3);
+        tab2.add(h4);
+        tab3.add(h5);
 
 
 

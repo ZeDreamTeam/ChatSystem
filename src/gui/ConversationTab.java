@@ -12,7 +12,7 @@ import javafx.scene.control.Tab;
 
 public class ConversationTab extends Tab {
     private User user;
-    private static final ObservableList<HistMessage> messages = FXCollections.observableArrayList();
+    private final ObservableList<HistMessage> messages = FXCollections.observableArrayList();
     private ListView<HistMessage> listMessages;
 
     public ConversationTab(User u){

@@ -1,6 +1,9 @@
 package controller;
 import data.*;
 import gui.GUI;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableArray;
+import javafx.collections.ObservableList;
 import networking.ChatNI;
 import networking.NetworkingException;
 import utils.Logger;
@@ -17,7 +20,7 @@ public class Controller {
     private GUI gui;
     private ChatNI ni;
     private User localUser;
-    private ArrayList<User> users;
+    private static final ObservableList<User> users= FXCollections.observableArrayList();
 
     public User getLocalUser() {
         return localUser;
@@ -35,7 +38,6 @@ public class Controller {
         } catch (NetworkingException.ReceivingException e){
             e.printStackTrace();
         }
-        users = new ArrayList<User>();
     }
 
     /**
@@ -280,7 +282,7 @@ public class Controller {
         user.addMessage(histMessage);
     }
 
-    public ArrayList<User> getUsers() {
+    public static ObservableList<User> getUsers() {
         return users;
     }
 }
