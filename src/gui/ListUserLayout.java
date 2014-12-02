@@ -7,6 +7,7 @@ import data.User;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.event.EventType;
@@ -27,6 +28,12 @@ public class ListUserLayout extends VBox {
         super();
         this.papa = pop;
         users = Controller.getUsers();
+        users.addListener(new ListChangeListener<User>() {
+            @Override
+            public void onChanged(Change<? extends User> c) {
+                papa.updateUsers(c.getList());
+            }
+        });
         list = new ListView<User>();
         list.setItems(users);
         list.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<User>() {

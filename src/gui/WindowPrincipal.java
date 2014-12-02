@@ -4,6 +4,7 @@ package gui;/**
 
 import data.User;
 import javafx.application.Application;
+import javafx.collections.ObservableList;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
@@ -45,7 +46,7 @@ public class WindowPrincipal extends Application {
         primaryStage.show();
     }
 
-    public void updateUsers(User user) {
-        this.conversationsLayout.addUser(user);
+    public void updateUsers(ObservableList<? extends User> user) {
+        this.conversationsLayout.updateTabs(user);
     }
 }

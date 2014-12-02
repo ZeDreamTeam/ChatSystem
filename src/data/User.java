@@ -1,5 +1,8 @@
 package data;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,14 +12,14 @@ import java.util.List;
 public class User {
     private final String name;
     private final String ip;
-    private final List<HistMessage> messages;
+    private final ObservableList<HistMessage> messages;
     private boolean connected;
     private boolean watched = false;
 
     public User(String name, String ip) {
         this.name = name;
         this.ip = ip;
-        this.messages = new ArrayList<HistMessage>();
+        this.messages = FXCollections.observableArrayList();
         this.connected = true;
     }
 
@@ -28,7 +31,7 @@ public class User {
         return ip;
     }
 
-    public List<HistMessage> getMessages() {
+    public ObservableList<HistMessage> getMessages() {
         return messages;
     }
     public void addMessage(HistMessage message){

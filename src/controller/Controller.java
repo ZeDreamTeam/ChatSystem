@@ -268,8 +268,6 @@ public class Controller {
     private void addUser(User u) {
         synchronized (gui){
             users.add(u);
-            gui.getBuffer().add(u);
-            gui.notify();
         }
 
     }

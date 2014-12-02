@@ -11,12 +11,13 @@ import javafx.scene.control.Tab;
 
 public class ConversationTab extends Tab {
     private User user;
-    private final ObservableList<HistMessage> messages = FXCollections.observableArrayList();
+    private final ObservableList<HistMessage> messages;
     private ListView<HistMessage> listMessages;
     public ConversationTab(User u){
         super();
         this.setClosable(false);
         user = u;
+        messages = u.getMessages();
         for(HistMessage currentMess : u.getMessages()){
             messages.add(currentMess);
         }

@@ -1,6 +1,7 @@
 package gui;
 
 import data.User;
+import javafx.collections.ObservableList;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 
@@ -13,13 +14,6 @@ public class ConversationsLayout extends TabPane{
     }
 
 
-    public void addUser(User u){
-        if(!contains(u)){
-            ConversationTab tab = new ConversationTab(u);
-            this.getTabs().add(tab);
-
-        }
-    }
 
     public void removeUser(User u){
 
@@ -49,10 +43,20 @@ public class ConversationsLayout extends TabPane{
         if(!found){
             i = -1;
         }
+
         return i;
     }
 
     public boolean contains(User u){
         return (getTabIndex(u) != -1);
+    }
+
+    public void updateTabs(ObservableList<? extends User> user) {
+        for(User u : user){
+            if(!contains(u)){
+                Tab tab = new ConversationTab(u);
+                getTabs().add(tab);
+            }
+        }
     }
 }

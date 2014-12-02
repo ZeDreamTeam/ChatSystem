@@ -2,6 +2,7 @@ package gui;
 
 import controller.Controller;
 import data.User;
+import javafx.application.Application;
 import javafx.stage.Stage;
 
 import java.net.UnknownHostException;
@@ -12,14 +13,22 @@ import java.util.List;
 /**
  * Created by djemaa on 01/12/14.
  */
-public class GUI extends Thread{
+public class GUI extends Application{
     private final WindowLogIn loginFrame = new WindowLogIn(this);
     private  final WindowPrincipal mainFrame = new WindowPrincipal(this);
     private final Controller controller = new Controller(this);
     private final Stage primaryStage = new Stage();
     private List<User> buffer = new ArrayList<User>();
-    public GUI(){
-        this.start();
+    public GUI() {
+        try {
+            this.start(primaryStage);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void start(Stage primaryStage) throws Exception {
         loginFrame.start(primaryStage);
     }
 
@@ -49,27 +58,6 @@ public class GUI extends Thread{
     public Controller getController() {
 
         return controller;
-    }
-
-
-    @Override
-    public void run() {
-        super.run();
-        try {
-            synchronized (this){
-                wait();
-                if (buffer.size()!=0){
-                    for(User u: buffer){
-                        mainFrame.updateUsers(u);
-                        buffer.remove(u);
-                    }
-                }
-
-            }
-
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
     }
 
     public List<User> getBuffer() {
