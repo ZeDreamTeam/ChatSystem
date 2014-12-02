@@ -8,41 +8,38 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.Event;
+import javafx.event.EventType;
 import javafx.geometry.Insets;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.VBox;
 
+import java.awt.event.MouseEvent;
+import java.beans.EventHandler;
 import java.util.ArrayList;
 
 public class ListUserLayout extends VBox {
-    private static ListUserLayout instance = null;
+    private final WindowPrincipal papa;
     private final ObservableList<User> users;
     private ListView<User> list;
 
-    private ListUserLayout(){
+    public ListUserLayout(WindowPrincipal pop){
         super();
+        this.papa = pop;
         users = Controller.getUsers();
         list = new ListView<User>();
         list.setItems(users);
         list.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<User>() {
             @Override
             public void changed(ObservableValue<? extends User> observable, User oldValue, User newValue) {
-                System.out.println("Selection : "+newValue);
+                System.out.println("Selection : " + newValue);
             }
         });
         this.getChildren().add(list);
         list.setPrefSize(200, 600);
-        this.setMargin(list, new Insets(75, 75, 0, 0));
+        this.setMargin(list, new Insets(75, 75, 0, 75));
         this.setMinSize(200,200);
     }
-
-    public static ListUserLayout getInstance(){
-        if(instance ==null){
-            instance = new ListUserLayout();
-        }
-        return instance;
-    }
-
 
     public boolean contains(User u){
         return userIndex(u)!=-1;

@@ -1,8 +1,8 @@
 package controller;
+
 import data.*;
 import gui.GUI;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableArray;
 import javafx.collections.ObservableList;
 import networking.ChatNI;
 import networking.NetworkingException;
@@ -10,14 +10,13 @@ import utils.Logger;
 
 import java.net.Inet4Address;
 import java.net.UnknownHostException;
-import java.util.ArrayList;
 import java.util.Date;
 
 /**
  * Created by djemaa on 28/11/14.
  */
 public class Controller {
-    private GUI gui;
+    private final GUI gui;
     private ChatNI ni;
     private User localUser;
     private static final ObservableList<User> users= FXCollections.observableArrayList();
@@ -267,7 +266,12 @@ public class Controller {
         return null;
     }
     private void addUser(User u) {
-        users.add(u);
+        synchronized (gui){
+            users.add(u);
+            gui.getBuffer().add(u);
+            gui.notify();
+        }
+
     }
 
     /**

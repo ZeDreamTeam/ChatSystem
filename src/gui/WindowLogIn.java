@@ -22,7 +22,6 @@ public class WindowLogIn extends Application {
     private GUI gui;
     public WindowLogIn(GUI guy){
         gui = guy;
-
     }
     public static void main(String[] args) {
         launch(args);

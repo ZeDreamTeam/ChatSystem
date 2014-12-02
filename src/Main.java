@@ -49,7 +49,5 @@ public class Main extends Application{
     @Override
     public void start(Stage stage) throws Exception {
         GUI gui = new GUI();
-        WindowLogIn logIn = new WindowLogIn(gui);
-        logIn.start(stage);
     }
 }
