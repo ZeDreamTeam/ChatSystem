@@ -6,4 +6,5 @@ package data;
 public abstract class Message {
 
     public abstract MessageType getType();
+    public abstract String toString();
 }

@@ -11,6 +11,7 @@ public class User {
     private final String ip;
     private final List<HistMessage> messages;
     private boolean connected;
+    private boolean watched = false;
 
     public User(String name, String ip) {
         this.name = name;
@@ -39,5 +40,9 @@ public class User {
     }
     public void setConnected(boolean connected){
         this.connected = connected;
+    }
+    @Override
+    public String toString(){
+        return name +"\n"+ ip;
     }
 }

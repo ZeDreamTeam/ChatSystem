@@ -1,18 +1,58 @@
-package gui;/**
- * Created by djemaa on 01/12/14.
+package gui;
+
+import data.User;
+import javafx.scene.control.TabPane;
+
+import java.util.ArrayList;
+
+/**
+ * Created by root on 01/12/14.
  */
+public class ConversationsLayout extends TabPane{
+    private static ConversationsLayout instance = null;
+    private ArrayList<User> users;
 
-import javafx.application.Application;
-import javafx.stage.Stage;
-
-public class ConversationsLayout extends Application {
-
-    public static void main(String[] args) {
-        launch(args);
+    private ConversationsLayout(){
+        super();
     }
 
-    @Override
-    public void start(Stage primaryStage) {
+    public static ConversationsLayout getInstance(){
+        if(instance == null){
+            instance = new ConversationsLayout();
+        }
+        return instance;
+    }
 
+    public void addUser(User u){
+        if(!contains(u)){
+            ConversationTab tab = new ConversationTab(u);
+            users.add(u);
+            this.getTabs().add(tab);
+        }
+    }
+
+    public void removeUser(User u){
+        users.remove(u);
+        this.getTabs().remove(u);
+    }
+
+    public int getTabIndex(User u){
+        boolean found = false;
+        int i = 0;
+        for(User currentUser : users){
+            if(u.equals(currentUser)){
+                found = true;
+                break;
+            }
+            i++;
+        }
+        if(!found){
+            i = -1;
+        }
+        return i;
+    }
+
+    public boolean contains(User u){
+        return (getTabIndex(u) != -1);
     }
 }

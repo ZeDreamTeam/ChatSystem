@@ -1,5 +1,6 @@
 package controller;
 import data.*;
+import gui.GUI;
 import networking.ChatNI;
 import networking.NetworkingException;
 import utils.Logger;
@@ -13,6 +14,7 @@ import java.util.Date;
  * Created by djemaa on 28/11/14.
  */
 public class Controller {
+    private GUI gui;
     private ChatNI ni;
     private User localUser;
     private ArrayList<User> users;
@@ -26,7 +28,8 @@ public class Controller {
      * it doesn't init localUser because it doesn't knwow localAdress
      * localAdress will be known after the connect()
      */
-    public Controller(){
+    public Controller(GUI guy){
+        gui = guy;
         try{
             ni = new ChatNI(this);
         } catch (NetworkingException.ReceivingException e){

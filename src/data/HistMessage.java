@@ -27,5 +27,9 @@ public class HistMessage {
     public Date getTimestamp() {
         return timestamp;
     }
+    @Override
+    public String toString(){
+        return message.toString()+ "je l'ai envoyé ? : "+isSentByUs+"Date :"+timestamp;
+    }
 
 }

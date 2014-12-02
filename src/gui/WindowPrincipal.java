@@ -2,24 +2,20 @@ package gui;/**
  * Created by djemaa on 01/12/14.
  */
 
+import data.*;
 import javafx.application.Application;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.geometry.HPos;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
-import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
-import javafx.scene.paint.CycleMethod;
-import javafx.scene.paint.LinearGradient;
-import javafx.scene.paint.Stop;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
-import javafx.scene.text.Text;
+import javafx.scene.control.TextField;
+import javafx.scene.input.InputEvent;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+
+import java.awt.event.FocusEvent;
+import java.util.Date;
+
 
 public class WindowPrincipal extends Application {
 
@@ -29,30 +25,66 @@ public class WindowPrincipal extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        GridPane principal = new GridPane();
-        /*principal.setHgap(10);
-        principal.setVgap(10);*/
-        principal.setPadding(new Insets(0, 10, 0, 10));
+        BorderPane principal = new BorderPane();
+        SendLayout bottom = SendLayout.getInstance();
+        ConversationsLayout tabo = ConversationsLayout.getInstance();
+        User u1 = new User("toto", "192.168.1.1");
+        User u2 = new User("titi", "192.168.1.2");
+        User u3 = new User("tata", "192.168.1.3");
 
+        principal.setBottom(bottom);
+        TextField mess = (TextField)bottom.getChildren().get(0);
 
-        principal.add(addSendLayout(), 0, 0, 8, 7);
-        principal.add(addSendLayout(),0, 7, 8,10 );
-        principal.add(addListUserLayout(), 8, 0, 10, 10);
+        mess.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<InputEvent>() {
+            @Override
+            public void handle(InputEvent inputEvent) {
+                TextField mess = (TextField) inputEvent.getSource();
+                if(mess.getText().equals("Entrez votre message")){
+                    mess.setText("");
+                }
+            }
+        });
+        mess.addEventHandler(MouseEvent.MOUSE_EXITED, new EventHandler<InputEvent>() {
+            @Override
+            public void handle(InputEvent event) {
+                TextField mess = (TextField) event.getSource();
+                if(mess.getText().equals("")){
+                    mess.setText("Entrez votre message");
+                }
+            }
+        });
+        ListUserLayout listUserLayout = ListUserLayout.getInstance();
+        listUserLayout.addUser(u1);
+        listUserLayout.addUser(u2);
+        listUserLayout.addUser(u3);
+        principal.setRight(listUserLayout);
+        principal.setCenter(tabo);
 
-        //playerGrid.setGridLinesVisible(true);
-        Scene scene = new Scene(principal, 500, 500);
+        Scene scene = new Scene(principal, 1200, 800);
 
-        primaryStage.setTitle("Goal Scorers!");
+        ConversationTab tab1 = new ConversationTab(u1);
+        ConversationTab tab2 = new ConversationTab(u2);
+        tabo.getTabs().add(tab1);
+        HistMessage h1 = new HistMessage(new MessMessage(23, "salut"), true,new Date());
+        HistMessage h2 = new HistMessage(new HelloAckMessage("kakou"), true,new Date());
+        HistMessage h3 = new HistMessage(new HelloMessage("bazoomboy"), true,new Date());
+        HistMessage h4 = new HistMessage(new GoodbyeMessage(), true,new Date());
+        HistMessage h5 = new HistMessage(new MessAckMessage(23), true,new Date());
+
+        tab1.add(h1);
+        tab1.add(h2);
+        tab1.add(h3);
+        tab1.add(h4);
+        tab1.add(h5);
+
+        tabo.getTabs().add(tab2);
+        primaryStage.setTitle("ChatSystem!");
         primaryStage.setScene(scene);
+        primaryStage.setResizable(false);
         primaryStage.show();
-        /*BorderPane principal = new BorderPane();
-        principal.setBottom(addSendLayout());
-        //principal.setRight(addListUserLayout());
-        BorderPane border = new BorderPane();
-        border.setBottom(addSendLayout());
-        border.setRight(addListUserLayout());
-        primaryStage.setScene(border.getScene());
-        primaryStage.show();*/
+        ConversationTab tab3 = new ConversationTab(u3);
+        tabo.getTabs().add(tab3);
+
 
 
 
@@ -61,20 +93,4 @@ public class WindowPrincipal extends Application {
 
     }
 
-    public VBox addListUserLayout(){
-        VBox listUser = new VBox();
-        ListView<String> list = new ListView<String>();
-        ObservableList<String> items = FXCollections.observableArrayList("Titi", "Toto", "Tata");
-        list.setItems(items);
-        listUser.getChildren().add(list);
-        return listUser;
-
-    }
-    public HBox addSendLayout(){
-        HBox sendLayout = new HBox(2);
-        TextField messageInput = new TextField("Entrez votre message");
-        Button send = new Button("Send");
-        sendLayout.getChildren().addAll(messageInput, send);
-        return sendLayout;
-    }
 }
