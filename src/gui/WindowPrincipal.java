@@ -49,4 +49,8 @@ public class WindowPrincipal extends Application {
     public void updateUsers(ObservableList<? extends User> user) {
         this.conversationsLayout.updateTabs(user);
     }
+
+    public void sendMessage(String text) {
+        gui.doSend(text, ((ConversationTab)conversationsLayout.getSelectionModel().getSelectedItem()).getUser());
+    }
 }

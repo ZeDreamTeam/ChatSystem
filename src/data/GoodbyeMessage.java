@@ -13,6 +13,6 @@ public class GoodbyeMessage extends Message {
 
     @Override
     public String toString() {
-        return null;
+        return "goodbye";
     }
 }

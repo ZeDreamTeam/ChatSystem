@@ -29,7 +29,13 @@ public class HistMessage {
     }
     @Override
     public String toString(){
-        return message.toString()+ "je l'ai envoyé ? : "+isSentByUs+"Date :"+timestamp;
+        String ret;
+        if(isSentByUs){
+            ret = "envoyé : ";
+        }else{
+            ret ="reçu : ";
+        }
+        return ret+message.toString();
     }
 
 }

@@ -19,10 +19,11 @@ public class MessAckMessage extends Message{
 
     @Override
     public String toString() {
-        return null;
+        return "ack"+messageNumber;
     }
 
     public int getMessageNumber() {
         return messageNumber;
     }
+
 }

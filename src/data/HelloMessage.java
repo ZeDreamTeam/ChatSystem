@@ -22,6 +22,6 @@ public class HelloMessage extends Message {
 
     @Override
     public String toString() {
-        return null;
+        return "hello from "+userName;
     }
 }

@@ -2,6 +2,7 @@ package gui;/**
  * Created by djemaa on 01/12/14.
  */
 
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
@@ -19,6 +20,11 @@ public class SendLayout extends HBox {
         final TextField messageInput = new TextField("Entrez votre message");
         messageInput.setPrefSize(800, 200);
         Button send = new Button("Send");
+        send.setOnAction(new EventHandler<ActionEvent>() {
+            @Override public void handle(ActionEvent e) {
+                papa.sendMessage(messageInput.getText());
+            }
+        });
         send.setMinSize(200,125);
         send.setPrefSize(200,125);
         this.setMargin(messageInput, new Insets(50,50,50,50));

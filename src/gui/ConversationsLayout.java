@@ -1,6 +1,7 @@
 package gui;
 
 import data.User;
+import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
@@ -54,8 +55,14 @@ public class ConversationsLayout extends TabPane{
     public void updateTabs(ObservableList<? extends User> user) {
         for(User u : user){
             if(!contains(u)){
-                Tab tab = new ConversationTab(u);
-                getTabs().add(tab);
+                final Tab tab = new ConversationTab(u);
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        getTabs().add(tab);
+                    }
+                });
+
             }
         }
     }

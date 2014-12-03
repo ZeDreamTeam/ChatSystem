@@ -30,6 +30,6 @@ public class MessMessage extends Message{
 
     @Override
     public String toString() {
-        return null;
+        return messageNumber+" : "+messageData;
     }
 }

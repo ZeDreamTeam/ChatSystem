@@ -149,7 +149,6 @@ public class Controller {
     public User connect(String uName) throws UnknownHostException {
         sendHelloMessage(uName);
         localUser = new User(uName, Inet4Address.getLocalHost().getHostAddress());
-
         return localUser;
     }
 

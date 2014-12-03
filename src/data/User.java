@@ -1,5 +1,6 @@
 package data;
 
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -35,7 +36,14 @@ public class User {
         return messages;
     }
     public void addMessage(HistMessage message){
-        messages.add(message);
+        final HistMessage toto = message;
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                messages.add(toto);
+            }
+        });
+
     }
 
     public boolean isConnected() {
