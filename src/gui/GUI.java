@@ -4,6 +4,7 @@ import controller.Controller;
 import data.User;
 import javafx.application.Application;
 import javafx.stage.Stage;
+import networking.NetworkingException;
 
 import java.net.UnknownHostException;
 import java.util.ArrayList;
@@ -16,15 +17,11 @@ import java.util.List;
 public class GUI extends Application{
     private final WindowLogIn loginFrame = new WindowLogIn(this);
     private  final WindowPrincipal mainFrame = new WindowPrincipal(this);
-    private final Controller controller = new Controller(this);
-    private final Stage primaryStage = new Stage();
-    private List<User> buffer = new ArrayList<User>();
-    public GUI() {
-        try {
-            this.start(primaryStage);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    private final Controller controller;
+
+    public GUI() throws NetworkingException.ReceivingException {
+        controller = new Controller(this);
+
     }
 
     @Override
@@ -32,7 +29,7 @@ public class GUI extends Application{
         loginFrame.start(primaryStage);
     }
 
-    public void doConnect(String text) {
+    public void doConnect(String text, Stage primaryStage) {
         try {
             controller.connect(text);
             loginFrame.stop();
@@ -48,19 +45,20 @@ public class GUI extends Application{
     public void doSend(String message, User user){
         controller.sendMessMessage(message, user);
     }
-
-    public WindowLogIn getLoginFrame() {
-        return loginFrame;
+    public void shutdown(){
+        try {
+            mainFrame.stop();
+            loginFrame.stop();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        controller.shutController();
+        try {
+            this.stop();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 
-
-    public Controller getController() {
-
-        return controller;
-    }
-
-    public List<User> getBuffer() {
-        return buffer;
-    }
 }

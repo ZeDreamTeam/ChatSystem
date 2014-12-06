@@ -15,35 +15,6 @@ public class Main extends Application{
 
 
         launch(params);
-        /*Controller controller = new Controller();
-        try {
-            User u = controller.connect("pascalladalleretournemangertonkebab");
-            System.out.println(u.getIp());
-            while(controller.getUsers().size() == 0){
-                System.out.println("toto");
-            }
-            int wait = (int)(500+Math.random()*3000);
-
-            System.out.println("tafdqfd");
-            Thread.sleep(wait);
-
-            controller.sendMessMessage("Salut c'est : "+controller.getLocalUser().getName(),controller.getUsers().get(0));
-             wait = (int)(500+Math.random()*3000);
-            for(User ut : controller.getUsers()) {
-                controller.sendMessMessage("Taracecassetoisaleiench", ut);
-            }
-            Thread.sleep(wait);
-            int k =0;
-            System.out.println("toto");
-            while(true){
-                k++;
-                controller.connect(k+"coucoumabite");
-            }
-        } catch (UnknownHostException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }*/
     }
 
     @Override

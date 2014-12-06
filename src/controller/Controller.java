@@ -17,26 +17,17 @@ import java.util.Date;
  */
 public class Controller {
     private final GUI gui;
-    private ChatNI ni;
+    private ChatNI ni = new ChatNI(this);
     private User localUser;
     private static final ObservableList<User> users= FXCollections.observableArrayList();
-
-    public User getLocalUser() {
-        return localUser;
-    }
 
     /**
      * Constructor : init ni and users
      * it doesn't init localUser because it doesn't knwow localAdress
      * localAdress will be known after the connect()
      */
-    public Controller(GUI guy){
+    public Controller(GUI guy) throws NetworkingException.ReceivingException {
         gui = guy;
-        try{
-            ni = new ChatNI(this);
-        } catch (NetworkingException.ReceivingException e){
-            e.printStackTrace();
-        }
     }
 
     /**
@@ -77,7 +68,6 @@ public class Controller {
      */
     public void receiveHelloAckMessage(HelloAckMessage hello, String ip){
         Logger.log("Received Hello Ack from " + hello.getUserName());
-
         String uName = hello.getUserName();
         if(!existsAndIsConnected(ip)){
             Logger.log("Creating user " + ip);
@@ -147,6 +137,7 @@ public class Controller {
      * @return the local user
      */
     public User connect(String uName) throws UnknownHostException {
+        ni.start();
         sendHelloMessage(uName);
         localUser = new User(uName, Inet4Address.getLocalHost().getHostAddress());
         return localUser;
@@ -285,5 +276,9 @@ public class Controller {
 
     public static ObservableList<User> getUsers() {
         return users;
+    }
+
+    public void shutController() {
+        ni.shutNI();
     }
 }

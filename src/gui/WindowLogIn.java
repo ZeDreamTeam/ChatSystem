@@ -17,6 +17,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 public class WindowLogIn extends Application {
     private GUI gui;
@@ -28,7 +29,7 @@ public class WindowLogIn extends Application {
     }
 
     @Override
-    public void start(Stage primaryStage) {
+    public void start(final Stage primaryStage) {
         primaryStage.setTitle("Welcome");
         GridPane grid = new GridPane();
         grid.setAlignment(Pos.CENTER);
@@ -56,7 +57,15 @@ public class WindowLogIn extends Application {
 
             @Override
             public void handle(ActionEvent e) {
-                gui.doConnect(userTextField.getText());
+                if(!userTextField.getText().equals("")) {
+                    gui.doConnect(userTextField.getText(), primaryStage);
+                }
+            }
+        });
+        primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+            @Override
+            public void handle(WindowEvent event) {
+                gui.shutdown();
             }
         });
     }

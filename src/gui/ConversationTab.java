@@ -22,7 +22,6 @@ public class ConversationTab extends Tab {
             messages.add(currentMess);
         }
         this.setText(u.getName());
-
         listMessages = new ListView<HistMessage>();
         listMessages.setItems(messages);
         this.setContent(listMessages);

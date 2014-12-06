@@ -13,16 +13,14 @@ import utils.Logger;
  */
 public class ChatNI {
     private final Controller controller;
-    private final UdpSender udpSender;
-    private final UdpReceiver udpReceiver;
+    private final UdpSender udpSender = new UdpSender();
+    private final UdpReceiver udpReceiver = new UdpReceiver(this);
     private final MessageFactory factory;
 
 
     public ChatNI(Controller contr) throws NetworkingException.ReceivingException {
         controller = contr;
         factory = MessageFactory.getFactory(MessageFactory.Type.JSON);
-        this.udpReceiver = new UdpReceiver(this);
-        this.udpSender = new UdpSender();
         udpReceiver.start();
     }
     public void performSendHello(HelloMessage helloMessage) {
@@ -100,7 +98,8 @@ public class ChatNI {
     }
     
     public void shutNI() {
-        udpReceiver.setShouldRun(false);
+        udpReceiver.shutdown();
+
     }
     public void doReceive(byte[] bytes,String ip) {
         MessageType type = null;
@@ -131,5 +130,9 @@ public class ChatNI {
         } catch (ParsingException e) {
             e.printStackTrace();
         }
+    }
+
+    public void start() {
+        udpReceiver.setBegin(true);
     }
 }

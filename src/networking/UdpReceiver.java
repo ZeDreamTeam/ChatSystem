@@ -4,6 +4,7 @@ import utils.Conf;
 import utils.Logger;
 
 import java.io.IOException;
+import java.io.InterruptedIOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.SocketException;
@@ -13,35 +14,55 @@ import java.net.SocketException;
  */
 public class UdpReceiver extends Thread {
     private final ChatNI chatNi;
+    private final byte[] buffer = new byte[2048];
     private final DatagramPacket datagramPacket;
-    private final byte[] buffer;
     private DatagramSocket receiveSocket;
-    private boolean shouldRun;
+    private boolean shouldRun = true;
+    private boolean begin = false;
 
     public UdpReceiver(ChatNI chatNi) throws NetworkingException.ReceivingException {
         this.chatNi = chatNi;
         try {
             receiveSocket=new DatagramSocket(Conf.PORT);
+            datagramPacket = new DatagramPacket(buffer, buffer.length);
         } catch (SocketException e) {
             throw new NetworkingException.ReceivingException("Error while initializing the receiving socket with port " + Conf.PORT, e);
         }
-        this.buffer = new byte[2048];
-        this.datagramPacket = new DatagramPacket(buffer, buffer.length);
-        this.shouldRun=true;
     }
     @Override
     public void run() {
+        while(!begin) {
+            try {
+                sleep(10);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
         while(shouldRun) {
             try {
                 receiveSocket.receive(datagramPacket);
-                chatNi.doReceive(buffer,datagramPacket.getAddress().getHostAddress());
+                chatNi.doReceive(buffer, datagramPacket.getAddress().getHostAddress());
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
+
+    }
+
+    public void shutdown() {
+        setShouldRun(false);
+        setBegin(true);
         receiveSocket.close();
     }
     public void setShouldRun(boolean shouldRun){
         this.shouldRun = shouldRun;
+    }
+
+    public synchronized void setBegin(boolean begin) {
+        this.begin = begin;
+    }
+
+    public boolean isBegin() {
+        return begin;
     }
 }

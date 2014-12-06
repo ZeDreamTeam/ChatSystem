@@ -27,7 +27,7 @@ public class ConversationsLayout extends TabPane{
     }
 
     public void setFocusUser(User u) {
-        this.getSelectionModel().clearAndSelect(getTabIndex(u));
+        this.getSelectionModel().select(getTabIndex(u));
     }
 
 

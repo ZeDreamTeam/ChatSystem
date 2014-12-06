@@ -39,6 +39,7 @@ public class ListUserLayout extends VBox {
         list.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<User>() {
             @Override
             public void changed(ObservableValue<? extends User> observable, User oldValue, User newValue) {
+                papa.selectUser(newValue);
                 System.out.println("Selection : " + newValue);
             }
         });
@@ -66,6 +67,9 @@ public class ListUserLayout extends VBox {
             position = -1;
         }
         return position;
+    }
+    public void focusUser(User u){
+        list.getSelectionModel().select(u);
     }
     public void removeUser(User u){
         users.remove(u);
