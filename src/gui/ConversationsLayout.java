@@ -15,17 +15,6 @@ public class ConversationsLayout extends TabPane{
     }
 
 
-
-    public void removeUser(User u){
-
-        for(Tab currentTab : getTabs()){
-            if(((ConversationTab) currentTab).getUser().equals(u)){
-                getTabs().remove(currentTab);
-                break;
-            }
-        }
-    }
-
     public void setFocusUser(User u) {
         this.getSelectionModel().select(getTabIndex(u));
     }

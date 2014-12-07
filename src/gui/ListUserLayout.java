@@ -48,37 +48,8 @@ public class ListUserLayout extends VBox {
         this.setMargin(list, new Insets(75, 75, 0, 75));
         this.setMinSize(200,200);
     }
-
-    public boolean contains(User u){
-        return userIndex(u)!=-1;
-    }
-
-    public int userIndex(User u){
-        boolean found = false;
-        int position =0;
-        for(User currentUser : users){
-            if(currentUser.equals(u)){
-                found = true;
-                break;
-            }
-            position++;
-        }
-        if(!found){
-            position = -1;
-        }
-        return position;
-    }
     public void focusUser(User u){
         list.getSelectionModel().select(u);
     }
-    public void removeUser(User u){
-        users.remove(u);
-    }
-    public void addUser(User u){
-        if(!contains(u)){
-            users.add(u);
-            System.out.println(u.toString());
-        }
 
-    }
 }

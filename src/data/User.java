@@ -11,17 +11,15 @@ import java.util.List;
  * Created by MagicMicky on 28/11/2014.
  */
 public class User {
-    private final String name;
+    private String name;
     private final String ip;
-    private final ObservableList<HistMessage> messages;
-    private boolean connected;
-    private boolean watched = false;
+    private final ObservableList<HistMessage> messages= FXCollections.observableArrayList();
+    private boolean connected = true;
+
 
     public User(String name, String ip) {
         this.name = name;
         this.ip = ip;
-        this.messages = FXCollections.observableArrayList();
-        this.connected = true;
     }
 
     public String getName() {
@@ -52,6 +50,12 @@ public class User {
     public void setConnected(boolean connected){
         this.connected = connected;
     }
+
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     @Override
     public String toString(){
         return name +"\n"+ ip;

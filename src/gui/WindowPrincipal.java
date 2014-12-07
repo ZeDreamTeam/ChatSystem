@@ -5,9 +5,7 @@ package gui;/**
 import data.User;
 import javafx.application.Application;
 import javafx.collections.ObservableList;
-import javafx.event.Event;
 import javafx.event.EventHandler;
-import javafx.event.EventType;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
@@ -32,7 +30,7 @@ public class WindowPrincipal extends Application {
     }
 
     @Override
-    public void start(Stage primaryStage) {
+    public void start(final Stage primaryStage) {
         mainPane.setCenter(conversationsLayout);
         mainPane.setRight(listUserLayout);
         mainPane.setBottom(sendLayout);

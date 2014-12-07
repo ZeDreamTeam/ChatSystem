@@ -30,10 +30,11 @@ public class HistMessage {
     @Override
     public String toString(){
         String ret;
+        ret = timestamp.getHours()+":"+timestamp.getMinutes();
         if(isSentByUs){
-            ret = "envoyé : ";
+            ret +=" < ";
         }else{
-            ret ="reçu : ";
+            ret +=" > ";
         }
         return ret+message.toString();
     }

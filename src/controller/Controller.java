@@ -2,6 +2,7 @@ package controller;
 
 import data.*;
 import gui.GUI;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import networking.ChatNI;
@@ -42,19 +43,19 @@ public class Controller {
         Logger.log("Received Hello message from " + hello.getUserName());
 
         String uName = hello.getUserName();
-        if(!exists(ip) && !ip.equals(localUser.getIp())){
+        if(!exists(ip) && !ip.equals(localUser.getIp()) && !isJeremie(ip)){
             Logger.log("Creating user " + ip);
 
             User user = new User(uName, ip);
             addUser(new User(uName, ip));
             sendHelloAckMessage(user);
-        } else if (!existsAndIsConnected(ip) && !ip.equals(localUser.getIp())) {
+        } else if (!existsAndIsConnected(ip) && !ip.equals(localUser.getIp()) && !isJeremie(ip)) {
             Logger.log("Updating user " + ip);
 
             User user = getUser(ip);
+            user.setName(uName);
             user.setConnected(true);
             sendHelloAckMessage(user);
-
             logMessage(hello, user, false);
         }
     }
@@ -69,10 +70,20 @@ public class Controller {
     public void receiveHelloAckMessage(HelloAckMessage hello, String ip){
         Logger.log("Received Hello Ack from " + hello.getUserName());
         String uName = hello.getUserName();
-        if(!existsAndIsConnected(ip)){
+        if(!exists(ip) && !ip.equals(localUser.getIp()) && !isJeremie(ip)){
             Logger.log("Creating user " + ip);
+
             User user = new User(uName, ip);
-            addUser(user);
+            addUser(new User(uName, ip));
+            sendHelloAckMessage(user);
+            logMessage(hello, user, false);
+        } else if (!existsAndIsConnected(ip) && !ip.equals(localUser.getIp()) && !isJeremie(ip)) {
+            Logger.log("Updating user " + ip);
+
+            User user = getUser(ip);
+            user.setName(uName);
+            user.setConnected(true);
+            sendHelloAckMessage(user);
             logMessage(hello, user, false);
         }
     }
@@ -257,7 +268,19 @@ public class Controller {
     }
     private void addUser(User u) {
         synchronized (gui){
-            users.add(u);
+            final User toto =u;
+            Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
+                    users.add(toto);
+                }
+            });
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
         }
 
     }
@@ -279,6 +302,13 @@ public class Controller {
     }
 
     public void shutController() {
+        sendGoodbyeMessage();
         ni.shutNI();
+    }
+    public boolean isJeremie(String ip){
+        if(ip.contains("255")){
+            return true;
+        }
+        return false;
     }
 }

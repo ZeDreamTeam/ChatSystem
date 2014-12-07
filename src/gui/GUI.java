@@ -32,7 +32,7 @@ public class GUI extends Application{
     public void doConnect(String text, Stage primaryStage) {
         try {
             controller.connect(text);
-            loginFrame.stop();
+            //loginFrame.stop();
             mainFrame.start(primaryStage);
 
         } catch (UnknownHostException e) {
@@ -59,6 +59,5 @@ public class GUI extends Application{
             e.printStackTrace();
         }
     }
-
 
 }
