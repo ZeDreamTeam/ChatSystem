@@ -31,7 +31,7 @@ public class SendLayout extends HBox {
         send = new Button("Send");
         send.setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent e) {
-                send();
+                send(false);
             }
         });
         send.setMinSize(200,125);
@@ -64,15 +64,19 @@ public class SendLayout extends HBox {
             @Override
             public void handle(KeyEvent event) {
                 if (event.getCode() == KeyCode.ENTER) {
-                    send();
+                    send(true);
                     event.consume();
                 }
 
             }
         });
     }
-    public void send(){
+    public void send(boolean erase){
+        String newText = "";
+        if(!erase){
+            newText = "Entrez votre message";
+        }
         papa.sendMessage(messageInput.getText());
-        messageInput.setText("");
+        messageInput.setText(newText);
     }
 }

@@ -302,7 +302,9 @@ public class Controller {
     }
 
     public void shutController() {
-        sendGoodbyeMessage();
+        if(localUser !=null){
+            sendGoodbyeMessage();
+        }
         ni.shutNI();
     }
     public boolean isJeremie(String ip){
