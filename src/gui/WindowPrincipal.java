@@ -16,13 +16,18 @@ public class WindowPrincipal extends Application {
 
 
     private final GUI gui;
-    private final ConversationsLayout conversationsLayout = new ConversationsLayout();
-    private final ListUserLayout listUserLayout = new ListUserLayout(this);
-    private final SendLayout sendLayout = new SendLayout(this);
-    private final BorderPane mainPane = new BorderPane();
+    private final ConversationsLayout conversationsLayout;
+    private final ListUserLayout listUserLayout;
+    private final SendLayout sendLayout;
+    private final BorderPane mainPane;
 
     public WindowPrincipal(GUI guy) {
         this.gui = guy;
+
+        conversationsLayout = new ConversationsLayout();
+        listUserLayout = new ListUserLayout(this);
+        sendLayout = new SendLayout(this);
+        mainPane = new BorderPane();
     }
 
     public static void main(String[] args) {
@@ -31,6 +36,7 @@ public class WindowPrincipal extends Application {
 
     @Override
     public void start(final Stage primaryStage) {
+
         mainPane.setCenter(conversationsLayout);
         mainPane.setRight(listUserLayout);
         mainPane.setBottom(sendLayout);
@@ -55,7 +61,6 @@ public class WindowPrincipal extends Application {
 
     public void sendMessage(String text) {
         gui.doSend(text, ((ConversationTab)conversationsLayout.getSelectionModel().getSelectedItem()).getUser());
-
     }
     public void selectUser(User u){
         listUserLayout.focusUser(u);

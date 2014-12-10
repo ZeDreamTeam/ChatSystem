@@ -50,19 +50,12 @@ public class UdpReceiver extends Thread {
     }
 
     public void shutdown() {
-        setShouldRun(false);
-        setBegin(true);
+        shouldRun = false;
+        begin = true;
         receiveSocket.close();
     }
-    public void setShouldRun(boolean shouldRun){
-        this.shouldRun = shouldRun;
+    public void launch(){
+        begin = true;
     }
 
-    public synchronized void setBegin(boolean begin) {
-        this.begin = begin;
-    }
-
-    public boolean isBegin() {
-        return begin;
-    }
 }

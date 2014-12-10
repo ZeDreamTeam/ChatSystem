@@ -133,6 +133,6 @@ public class ChatNI {
     }
 
     public void start() {
-        udpReceiver.setBegin(true);
+        udpReceiver.launch();
     }
 }

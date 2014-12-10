@@ -21,6 +21,14 @@ import javafx.stage.WindowEvent;
 
 public class WindowLogIn extends Application {
     private GUI gui;
+    private GridPane grid = new GridPane();
+    private Text scenetitle = new Text("Login plz");
+    final Label userName = new Label("User Name:");
+    final TextField editUserName = new TextField();
+    private Button connectButton = new Button("Connect");
+    private HBox connectButtonHBox = new HBox(10);
+    private Scene scene = new Scene(grid);
+
     public WindowLogIn(GUI guy){
         gui = guy;
     }
@@ -31,43 +39,37 @@ public class WindowLogIn extends Application {
     @Override
     public void start(final Stage primaryStage) {
         primaryStage.setTitle("Welcome");
-        GridPane grid = new GridPane();
+        scenetitle.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
+
+        connectButtonHBox.getChildren().add(connectButton);
+        connectButton.setOnAction(new EventHandler<ActionEvent>() {
+
+            @Override
+            public void handle(ActionEvent e) {
+                if(!editUserName.getText().equals("")) {
+                    gui.doConnect(editUserName.getText(), primaryStage);
+                }
+            }
+        });
+
         grid.setAlignment(Pos.CENTER);
         grid.setHgap(10);
         grid.setVgap(10);
         grid.setPadding(new Insets(25, 25, 25, 25));
-        Text scenetitle = new Text("Login plz");
-        scenetitle.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
         grid.add(scenetitle, 0, 0, 2, 1);
-
-        final Label userName = new Label("User Name:");
         grid.add(userName, 0, 1);
+        grid.add(editUserName, 1, 1);
+        grid.add(connectButtonHBox, 2, 1);
 
-        final TextField userTextField = new TextField();
-        grid.add(userTextField, 1, 1);
-
-        Button btn = new Button("Connect");
-        HBox hBtn = new HBox(10);
-        hBtn.getChildren().add(btn);
-        grid.add(hBtn, 2, 1);
-        Scene scene = new Scene(grid);
-        primaryStage.setScene(scene);
-        primaryStage.show();
-        btn.setOnAction(new EventHandler<ActionEvent>() {
-
-            @Override
-            public void handle(ActionEvent e) {
-                if(!userTextField.getText().equals("")) {
-                    gui.doConnect(userTextField.getText(), primaryStage);
-                }
-            }
-        });
         primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
             @Override
             public void handle(WindowEvent event) {
                 gui.shutdown();
             }
         });
+        primaryStage.setScene(scene);
+        primaryStage.show();
+
     }
 
 }

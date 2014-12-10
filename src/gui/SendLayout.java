@@ -4,25 +4,34 @@ package gui;/**
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.event.EventType;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.input.InputEvent;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 
+import javax.xml.soap.Text;
+import java.security.Key;
+
 public class SendLayout extends HBox {
     private final WindowPrincipal papa;
+    private final TextField messageInput;
+    private final Button send;
 
     public SendLayout(WindowPrincipal pop){
         super(50);
         this.papa = pop;
-        final TextField messageInput = new TextField("Entrez votre message");
+        messageInput = new TextField("Entrez votre message");
         messageInput.setPrefSize(800, 200);
-        Button send = new Button("Send");
+
+        send = new Button("Send");
         send.setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent e) {
-                papa.sendMessage(messageInput.getText());
+                send();
             }
         });
         send.setMinSize(200,125);
@@ -50,7 +59,20 @@ public class SendLayout extends HBox {
                 }
             }
         });
+        messageInput.addEventHandler(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>(){
+
+            @Override
+            public void handle(KeyEvent event) {
+                if (event.getCode() == KeyCode.ENTER) {
+                    send();
+                    event.consume();
+                }
+
+            }
+        });
     }
-
-
+    public void send(){
+        papa.sendMessage(messageInput.getText());
+        messageInput.setText("");
+    }
 }

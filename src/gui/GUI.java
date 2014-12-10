@@ -7,21 +7,20 @@ import javafx.stage.Stage;
 import networking.NetworkingException;
 
 import java.net.UnknownHostException;
-import java.util.ArrayList;
-import java.util.List;
 
 
 /**
  * Created by djemaa on 01/12/14.
  */
 public class GUI extends Application{
-    private final WindowLogIn loginFrame = new WindowLogIn(this);
-    private  final WindowPrincipal mainFrame = new WindowPrincipal(this);
+    private final WindowLogIn loginFrame;
+    private  final WindowPrincipal mainFrame;
     private final Controller controller;
 
     public GUI() throws NetworkingException.ReceivingException {
+        loginFrame = new WindowLogIn(this);
+        mainFrame = new WindowPrincipal(this);
         controller = new Controller(this);
-
     }
 
     @Override
@@ -32,7 +31,6 @@ public class GUI extends Application{
     public void doConnect(String text, Stage primaryStage) {
         try {
             controller.connect(text);
-            //loginFrame.stop();
             mainFrame.start(primaryStage);
 
         } catch (UnknownHostException e) {
