@@ -58,7 +58,7 @@ public class GUI extends Application{
         }
     }
 
-    public void sendFile(String path) {
-        
+    public void sendFile(String path, User user) {
+
     }
 }
