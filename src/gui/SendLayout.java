@@ -40,8 +40,8 @@ public class SendLayout extends HBox {
                 sendMessage(false);
             }
         });
-        send.setMinSize(200,125);
-        send.setPrefSize(200,125);
+        send.setMinSize(200, 125);
+        send.setPrefSize(200, 125);
         fileChooser = new FileChooser();
         fileChooser.setTitle("OMG GET FILE");
         file = new Button("file");
@@ -54,9 +54,11 @@ public class SendLayout extends HBox {
             }
         });
         file.setPrefSize(100,100);
-        this.setMargin(messageInput, new Insets(50,50,50,50));
-        this.setMargin(send, new Insets(50,75,75,75));
         this.getChildren().addAll(messageInput, send, file);
+        this.setMargin(messageInput, new Insets(50,50,50,50));
+        this.setMargin(send, new Insets(50,10,75,75));
+        this.setMargin(file, new Insets(50,10,75,25));
+
 
 
         messageInput.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<InputEvent>() {
