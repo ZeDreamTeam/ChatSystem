@@ -40,7 +40,9 @@ public class TcpServer extends Thread{
                     Logger.log("Waiting for a connection");
                     Socket sock = this.socket.accept();
                     Logger.log("Connection accepted!");
-                    receivers.put(sock.getRemoteSocketAddress().toString(), new TcpReceiver(this,sock));
+                    TcpReceiver receiver = new TcpReceiver(this,sock);
+                    receivers.put(sock.getRemoteSocketAddress().toString(), receiver);
+                    receiver.start();
 
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -49,8 +51,11 @@ public class TcpServer extends Thread{
         }
     }
 
-    public void shutdown() {
+    public void shutdown()  {
         this.shouldRun=false;
+        try {
+            this.socket.close();
+        } catch (IOException ignored) {}
         for(TcpReceiver receiver : receivers.values()) {
             receiver.shutdown();
         }

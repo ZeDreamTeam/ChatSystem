@@ -26,6 +26,7 @@ public class ChatNI {
     public ChatNI(Controller contr) throws NetworkingException.ReceivingException {
         controller = contr;
         tcpServer = new TcpServer(this);
+        tcpServer.start();
         udpReceiver = new UdpReceiver(this);
         udpSender = new UdpSender();
 
@@ -145,7 +146,9 @@ public class ChatNI {
     }
 
     public void doSendFile(FileDescription file, String ipTo) {
-        this.senders.put(file, new TcpSender(this, file,ipTo));
+        TcpSender sender = new TcpSender(this, file,ipTo);
+        this.senders.put(file, sender);
+        sender.start();
     }
 
     public void notifyFileSent(FileDescription file) {

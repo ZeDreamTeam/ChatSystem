@@ -2,6 +2,7 @@ package networking;
 
 import data.FileDescription;
 import sun.swing.text.TextComponentPrintable;
+import utils.Logger;
 
 import java.io.*;
 import java.net.Socket;
@@ -16,6 +17,7 @@ public class TcpReceiver extends Thread{
         this.clientSocket = socket;
         this.tcpServer=tcpServer;
         this.clientIp=clientSocket.getRemoteSocketAddress().toString();
+        this.shouldRun = true;
     }
 
     @Override
@@ -32,14 +34,17 @@ public class TcpReceiver extends Thread{
             long readCounter = fileSize;
             byte[] buffer = new byte[2048];
             int nbBytesRead;
+            Logger.log("Receiving file " + file.getName());
             //Receive the file
             while(shouldRun && (readCounter > 0) && ((nbBytesRead = dis.read(buffer, 0, (int) Math.min(readCounter, buffer.length)))!=-1)) {
                 outputStream.write(buffer,0,nbBytesRead);
                 readCounter -=nbBytesRead;
+                Logger.log("Read " + nbBytesRead + " bytes");
             }
             outputStream.close();
             dis.close();
             in.close();
+            Logger.log("Finished reading");
             tcpServer.fileReceived(clientIp, file);
             clientSocket.close();
 
@@ -51,6 +56,9 @@ public class TcpReceiver extends Thread{
     }
 
     public void shutdown() {
+        try {
+            this.clientSocket.close();
+        } catch (IOException ignored) {}
         this.shouldRun = false;
     }
 }
