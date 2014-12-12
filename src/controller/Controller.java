@@ -191,7 +191,7 @@ public class Controller {
         if(rand != 0){
             rand -=1 ;
         }
-        Logger.log("Sending message ( " + data + " - " + rand+ ") to " + user.getName());
+        Logger.log("Sending message ( " + data + " - " + rand + ") to " + user.getName());
         MessMessage messMessage = new MessMessage(rand, data);
         logMessage(messMessage, user, true);
         ni.performSendMessMessage(messMessage, user);
@@ -232,6 +232,21 @@ public class Controller {
         ni.performSTFU(goodbyeMessage, ip);
 
     }
+
+
+    public void notifyFileSent(FileDescription file) {
+        //TODO
+    }
+
+    public void notifyReceivingFile(String ipFrom, FileDescription file) {
+        //TODO
+    }
+
+    public void notifyFileReceived(String ipFrom, FileDescription file) {
+        //TODO
+    }
+
+
 
     /**
      * Check if a user exists

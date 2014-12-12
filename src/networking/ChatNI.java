@@ -153,7 +153,7 @@ public class ChatNI {
 
     public void notifyFileSent(FileDescription file) {
         this.senders.remove(file);
-//   TODO     this.controller.notifyFileSent(file);
+        this.controller.notifyFileSent(file);
     }
 
     public void start() {
@@ -161,10 +161,10 @@ public class ChatNI {
     }
 
     public void doNotifyReceivingFile(String ipFrom, FileDescription file) {
-        //TODO:this.controller.notifyReceivingFile(ipFrom, file);
+        this.controller.notifyReceivingFile(ipFrom, file);
     }
 
     public void doNotifyFileReceived(String ipFrom, FileDescription file) {
-        //TODO:this.controller.notifyFileReceived(ipFrom, file);
+        this.controller.notifyFileReceived(ipFrom, file);
     }
 }
