@@ -135,4 +135,12 @@ public class ChatNI {
     public void start() {
         udpReceiver.launch();
     }
+
+    public void doNotifyReceivingFile(String ipFrom, FileDescription file) {
+        //TODO:this.controller.notifyReceivingFile(ipFrom, file);
+    }
+
+    public void doNotifyFileReceived(String ipFrom, FileDescription file) {
+        //TODO:this.controller.notifyFileReceived(ipFrom, file);
+    }
 }
