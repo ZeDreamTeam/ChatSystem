@@ -40,7 +40,6 @@ public class ListUserLayout extends VBox {
             @Override
             public void changed(ObservableValue<? extends User> observable, User oldValue, User newValue) {
                 papa.selectUser(newValue);
-                System.out.println("Selection : " + newValue);
             }
         });
         this.getChildren().add(list);

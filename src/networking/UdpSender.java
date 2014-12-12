@@ -21,7 +21,7 @@ public class UdpSender {
         try {
             DatagramSocket socket = new DatagramSocket(/*Conf.PORT, InetAddress.getByName("255.255.255.255")*/);
             socket.setBroadcast(true);
-            DatagramPacket packet = new DatagramPacket(bytes,bytes.length, InetAddress.getByName("255.255.255.255"), Conf.PORT);
+            DatagramPacket packet = new DatagramPacket(bytes,bytes.length, InetAddress.getByName("10.1.255.255"), Conf.PORT);
             socket.send(packet);
             socket.close();
         } catch (IOException e) {

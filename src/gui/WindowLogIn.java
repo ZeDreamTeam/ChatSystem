@@ -28,7 +28,6 @@ public class WindowLogIn extends Application {
     private Button connectButton = new Button("Connect");
     private HBox connectButtonHBox = new HBox(10);
     private Scene scene = new Scene(grid);
-
     public WindowLogIn(GUI guy){
         gui = guy;
     }
@@ -46,7 +45,7 @@ public class WindowLogIn extends Application {
 
             @Override
             public void handle(ActionEvent e) {
-                if(!editUserName.getText().equals("")) {
+                if (!editUserName.getText().equals("")) {
                     gui.doConnect(editUserName.getText(), primaryStage);
                 }
             }
@@ -67,6 +66,7 @@ public class WindowLogIn extends Application {
                 gui.shutdown();
             }
         });
+        scene.getStylesheets().add("gui/superStyleSheet.css");
         primaryStage.setScene(scene);
         primaryStage.show();
 
