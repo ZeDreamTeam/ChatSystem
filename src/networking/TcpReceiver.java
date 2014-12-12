@@ -10,7 +10,9 @@ public class TcpReceiver extends Thread{
     private final TcpServer tcpServer;
     private final Socket clientSocket;
     private final String clientIp;
-    public TcpReceiver(Socket socket, TcpServer tcpServer) {
+    private boolean shouldRun;
+
+    public TcpReceiver(TcpServer tcpServer, Socket socket ) {
         this.clientSocket = socket;
         this.tcpServer=tcpServer;
         this.clientIp=clientSocket.getRemoteSocketAddress().toString();
@@ -31,7 +33,7 @@ public class TcpReceiver extends Thread{
             byte[] buffer = new byte[2048];
             int nbBytesRead;
             //Receive the file
-            while((readCounter > 0) && ((nbBytesRead = dis.read(buffer, 0, (int) Math.min(readCounter, buffer.length)))!=-1)) {
+            while(shouldRun && (readCounter > 0) && ((nbBytesRead = dis.read(buffer, 0, (int) Math.min(readCounter, buffer.length)))!=-1)) {
                 outputStream.write(buffer,0,nbBytesRead);
                 readCounter -=nbBytesRead;
             }
@@ -46,5 +48,9 @@ public class TcpReceiver extends Thread{
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void shutdown() {
+        this.shouldRun = false;
     }
 }
