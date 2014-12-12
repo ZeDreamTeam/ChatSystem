@@ -7,30 +7,28 @@ import utils.Logger;
 import java.io.*;
 import java.net.Socket;
 
-public class TcpSender extends Thread{
+public class TcpSender extends Thread {
     private final ChatNI chatNI;
 
     private FileDescription fileDescription;
-    private File fileToSend;
     private Socket clientSocket;
 
-    public TcpSender(ChatNI chatNI, FileDescription file, String ipTo) {
+    public TcpSender(ChatNI chatNI, FileDescription file, String ipTo) throws NetworkingException.SendingException {
         this.chatNI = chatNI;
         this.fileDescription = file;
         Logger.log("Starting sending file");
         try {
             this.clientSocket = new Socket(ipTo, Conf.PORT);
-            this.fileToSend = new File(fileDescription.getPath());
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new NetworkingException.SendingException("Couldn't start client socket to ip " + ipTo + " and port " + Conf.PORT, e);
         }
     }
 
     @Override
     public void run() {
         try {
-            byte[] fileBytes = new byte[(int) fileToSend.length()];
-            FileInputStream fis = new FileInputStream(fileToSend);
+            byte[] fileBytes = new byte[(int) fileDescription.getSize()];
+            FileInputStream fis = new FileInputStream(fileDescription.getFile());
             BufferedInputStream inputStream = new BufferedInputStream(fis);
             DataInputStream dataInputStream = new DataInputStream(inputStream);
             dataInputStream.readFully(fileBytes, 0, fileBytes.length);
@@ -38,7 +36,7 @@ public class TcpSender extends Thread{
             dataInputStream.close();
             inputStream.close();
             fis.close();
-            Logger.log("File sending");
+            Logger.log("Sending file " + fileDescription.getName() + "...");
             OutputStream outputStream = clientSocket.getOutputStream();
             DataOutputStream dataOutputStream = new DataOutputStream(outputStream);
 
@@ -50,7 +48,7 @@ public class TcpSender extends Thread{
 
             dataOutputStream.close();
             outputStream.close();
-            Logger.log("File Sent");
+            Logger.log("... file Sent!");
             chatNI.notifyFileSent(fileDescription);
 
             clientSocket.close();

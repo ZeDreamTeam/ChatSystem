@@ -16,9 +16,20 @@ public class NetworkingException extends Exception {
     }
 
     public static class ReceivingException extends NetworkingException {
-
         protected ReceivingException(String e, Exception ex) {
             super(e,ex);
+        }
+    }
+
+    public static class SendingFileException extends NetworkingException {
+        protected SendingFileException(String e, Exception ex) {
+            super(e, ex);
+        }
+    }
+
+    public static class ReceivingFileException extends NetworkingException {
+        protected ReceivingFileException(String e, Exception ex) {
+            super(e, ex);
         }
     }
 

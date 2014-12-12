@@ -19,8 +19,8 @@ import java.util.Date;
  */
 public class Controller {
     private final GUI gui;
-    private ChatNI ni = new ChatNI(this);
     private User localUser;
+    private ChatNI ni;
     private static final ObservableList<User> users= FXCollections.observableArrayList();
 
     /**
@@ -28,8 +28,9 @@ public class Controller {
      * it doesn't init localUser because it doesn't knwow localAdress
      * localAdress will be known after the connect()
      */
-    public Controller(GUI guy) throws NetworkingException.ReceivingException {
+    public Controller(GUI guy) throws NetworkingException.ReceivingException, NetworkingException.ReceivingFileException {
         gui = guy;
+        ni = new ChatNI(this);
     }
 
     /**
@@ -248,8 +249,7 @@ public class Controller {
     }
 
     public void performSendFile(String filePath, User user) {
-        File file = new File(filePath);
-        ni.doSendFile(new FileDescription(file.getName(),file.length(),filePath),user.getIp());
+        ni.doSendFile(new FileDescription(new File(filePath)),user.getIp());
     }
 
     /**

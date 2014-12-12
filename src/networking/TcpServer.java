@@ -9,7 +9,6 @@ import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class TcpServer extends Thread{
@@ -18,7 +17,7 @@ public class TcpServer extends Thread{
     private ServerSocket socket;
     private boolean shouldRun;
     private Map<String, TcpReceiver> receivers;
-    public TcpServer(ChatNI chatNI) {
+    public TcpServer(ChatNI chatNI) throws NetworkingException.ReceivingFileException {
         this.chatNI = chatNI;
         this.localSockAddr = new InetSocketAddress(Conf.PORT);
         this.shouldRun=true;
@@ -27,8 +26,7 @@ public class TcpServer extends Thread{
         try {
             socket = new ServerSocket(Conf.PORT);
         } catch (IOException e) {
-            //TODO
-            e.printStackTrace();
+            throw new NetworkingException.ReceivingFileException("Error while starting SocketServer", e);
         }
     }
 

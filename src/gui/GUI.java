@@ -18,7 +18,7 @@ public class GUI extends Application{
     private  final WindowPrincipal mainFrame;
     private final Controller controller;
 
-    public GUI() throws NetworkingException.ReceivingException {
+    public GUI() throws NetworkingException.ReceivingException, NetworkingException.ReceivingFileException {
         loginFrame = new WindowLogIn(this);
         mainFrame = new WindowPrincipal(this);
         controller = new Controller(this);
@@ -60,7 +60,6 @@ public class GUI extends Application{
     }
 
     public void sendFile(String path, User user) {
-        Logger.log("sending file tarace");
         this.controller.performSendFile(path,user);
     }
 }

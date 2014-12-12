@@ -23,17 +23,17 @@ public class ChatNI {
 
     private final Map<FileDescription, TcpSender> senders;
 
-    public ChatNI(Controller contr) throws NetworkingException.ReceivingException {
+    public ChatNI(Controller contr) throws NetworkingException.ReceivingException, NetworkingException.ReceivingFileException {
         controller = contr;
-        tcpServer = new TcpServer(this);
-        tcpServer.start();
         udpReceiver = new UdpReceiver(this);
+        tcpServer = new TcpServer(this);
         udpSender = new UdpSender();
 
         senders = new HashMap<FileDescription, TcpSender>();
 
         factory = MessageFactory.getFactory(MessageFactory.Type.JSON);
         udpReceiver.start();
+        tcpServer.start();
     }
     public void performSendHello(HelloMessage helloMessage) {
         try {
@@ -146,9 +146,14 @@ public class ChatNI {
     }
 
     public void doSendFile(FileDescription file, String ipTo) {
-        TcpSender sender = new TcpSender(this, file,ipTo);
-        this.senders.put(file, sender);
-        sender.start();
+        try {
+            TcpSender sender = new TcpSender(this, file,ipTo);
+            this.senders.put(file, sender);
+            sender.start();
+        } catch (NetworkingException.SendingException e) {
+            Logger.log("An error happened sending the file");
+            e.printStackTrace();
+        }
     }
 
     public void notifyFileSent(FileDescription file) {

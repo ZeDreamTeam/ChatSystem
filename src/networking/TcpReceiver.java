@@ -25,27 +25,33 @@ public class TcpReceiver extends Thread{
         try {
             InputStream in = clientSocket.getInputStream();
             DataInputStream dis = new DataInputStream(in);
+
             //Read fileName and file size
             String fileName = sanitizeFileName(dis.readUTF());
             long fileSize = dis.readLong();
+
+            //Notify TCPServer.
             FileDescription file = new FileDescription(fileName,fileSize,"/tmp/" +fileName);
             tcpServer.receivingFile(clientIp, file);
+
             OutputStream outputStream = new FileOutputStream("/tmp/"+fileName);
             long readCounter = fileSize;
             byte[] buffer = new byte[2048];
             int nbBytesRead;
+
             Logger.log("Receiving file " + file.getName());
             //Receive the file
             while(shouldRun && (readCounter > 0) && ((nbBytesRead = dis.read(buffer, 0, (int) Math.min(readCounter, buffer.length)))!=-1)) {
                 outputStream.write(buffer,0,nbBytesRead);
                 readCounter -=nbBytesRead;
-                Logger.log("Read " + nbBytesRead + " bytes");
             }
             outputStream.close();
             dis.close();
             in.close();
-            Logger.log("Finished reading");
+
+            Logger.log("File received in " + file.getPath());
             tcpServer.fileReceived(clientIp, file);
+
             clientSocket.close();
 
         } catch (FileNotFoundException e) {
