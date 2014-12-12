@@ -9,6 +9,7 @@ import networking.ChatNI;
 import networking.NetworkingException;
 import utils.Logger;
 
+import java.io.File;
 import java.net.Inet4Address;
 import java.net.UnknownHostException;
 import java.util.Date;
@@ -246,7 +247,10 @@ public class Controller {
         //TODO
     }
 
-
+    public void performSendFile(String filePath, User user) {
+        File file = new File(filePath);
+        ni.doSendFile(new FileDescription(file.getName(),file.length(),filePath),user.getIp());
+    }
 
     /**
      * Check if a user exists
