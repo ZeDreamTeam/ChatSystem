@@ -2,6 +2,7 @@ package networking;
 
 import data.FileDescription;
 import utils.Conf;
+import utils.Logger;
 
 import java.io.*;
 import java.net.Socket;
@@ -16,6 +17,7 @@ public class TcpSender extends Thread{
     public TcpSender(ChatNI chatNI, FileDescription file, String ipTo) {
         this.chatNI = chatNI;
         this.fileDescription = file;
+        Logger.log("Starting sending file");
         try {
             this.clientSocket = new Socket(ipTo, Conf.PORT);
             this.fileToSend = new File(fileDescription.getPath());
@@ -36,7 +38,7 @@ public class TcpSender extends Thread{
             dataInputStream.close();
             inputStream.close();
             fis.close();
-
+            Logger.log("File sending");
             OutputStream outputStream = clientSocket.getOutputStream();
             DataOutputStream dataOutputStream = new DataOutputStream(outputStream);
 
@@ -48,7 +50,7 @@ public class TcpSender extends Thread{
 
             dataOutputStream.close();
             outputStream.close();
-
+            Logger.log("File Sent");
             chatNI.notifyFileSent(fileDescription);
 
             clientSocket.close();

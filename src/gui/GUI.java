@@ -5,6 +5,7 @@ import data.User;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import networking.NetworkingException;
+import utils.Logger;
 
 import java.net.UnknownHostException;
 
@@ -59,6 +60,7 @@ public class GUI extends Application{
     }
 
     public void sendFile(String path, User user) {
-
+        Logger.log("sending file tarace");
+        this.controller.performSendFile(path,user);
     }
 }
