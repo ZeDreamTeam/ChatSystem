@@ -51,7 +51,6 @@ public class Controller {
             sendHelloAckMessage(user);
         } else if (!existsAndIsConnected(ip) && !ip.equals(localUser.getIp()) && !isJeremie(ip)) {
             Logger.log("Updating user " + ip);
-
             User user = getUser(ip);
             user.setName(uName);
             user.setConnected(true);

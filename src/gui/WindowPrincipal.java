@@ -41,6 +41,8 @@ public class WindowPrincipal extends Application {
         mainPane.setRight(listUserLayout);
         mainPane.setBottom(sendLayout);
         Scene scene = new Scene(mainPane, 1200, 800);
+        scene.getStylesheets().add("gui/superStyleSheet.css");
+
         primaryStage.setTitle("ChatSystem OMG!");
         primaryStage.setScene(scene);
         primaryStage.setResizable(false);
