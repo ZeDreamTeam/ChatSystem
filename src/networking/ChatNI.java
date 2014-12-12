@@ -7,6 +7,9 @@ import messages.ParsingException;
 import messages.data.*;
 import utils.Logger;
 
+import java.util.HashMap;
+import java.util.Map;
+
 
 /**
  * Created by MagicMicky on 28/11/2014.
@@ -18,12 +21,15 @@ public class ChatNI {
     private final TcpServer tcpServer;
     private final MessageFactory factory;
 
+    private final Map<FileDescription, TcpSender> senders;
 
     public ChatNI(Controller contr) throws NetworkingException.ReceivingException {
         controller = contr;
         tcpServer = new TcpServer(this);
         udpReceiver = new UdpReceiver(this);
         udpSender = new UdpSender();
+
+        senders = new HashMap<FileDescription, TcpSender>();
 
         factory = MessageFactory.getFactory(MessageFactory.Type.JSON);
         udpReceiver.start();
@@ -136,6 +142,15 @@ public class ChatNI {
         } catch (ParsingException e) {
             e.printStackTrace();
         }
+    }
+
+    public void doSendFile(FileDescription file, String ipTo) {
+        this.senders.put(file, new TcpSender(this, file,ipTo));
+    }
+
+    public void notifyFileSent(FileDescription file) {
+        this.senders.remove(file);
+//   TODO     this.controller.notifyFileSent(file);
     }
 
     public void start() {
