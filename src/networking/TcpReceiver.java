@@ -26,7 +26,7 @@ public class TcpReceiver extends Thread{
             InputStream in = clientSocket.getInputStream();
             DataInputStream dis = new DataInputStream(in);
             //Read fileName and file size
-            String fileName = dis.readUTF();
+            String fileName = sanitizeFileName(dis.readUTF());
             long fileSize = dis.readLong();
             FileDescription file = new FileDescription(fileName,fileSize,"/tmp/" +fileName);
             tcpServer.receivingFile(clientIp, file);
@@ -60,5 +60,9 @@ public class TcpReceiver extends Thread{
             this.clientSocket.close();
         } catch (IOException ignored) {}
         this.shouldRun = false;
+    }
+
+    private String sanitizeFileName(String fileName) {
+        return fileName.replace("\\", "_").replace("/","_");
     }
 }
