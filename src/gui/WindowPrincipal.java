@@ -71,5 +71,6 @@ public class WindowPrincipal extends Application {
     }
 
     public void sendFile(String path) {
+        gui.sendFile(path,((ConversationTab)conversationsLayout.getSelectionModel().getSelectedItem()).getUser() );
     }
 }
