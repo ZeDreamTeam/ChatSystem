@@ -18,7 +18,7 @@ public class WindowPrincipal extends Application {
     private final GUI gui;
     private final ConversationsLayout conversationsLayout;
     private final ListUserLayout listUserLayout;
-    private final SendLayout sendLayout;
+    private SendLayout sendLayout;
     private final BorderPane mainPane;
 
     public WindowPrincipal(GUI guy) {
@@ -26,7 +26,7 @@ public class WindowPrincipal extends Application {
 
         conversationsLayout = new ConversationsLayout();
         listUserLayout = new ListUserLayout(this);
-        sendLayout = new SendLayout(this);
+
         mainPane = new BorderPane();
     }
 
@@ -37,6 +37,7 @@ public class WindowPrincipal extends Application {
     @Override
     public void start(final Stage primaryStage) {
 
+        sendLayout = new SendLayout(this, primaryStage);
         mainPane.setCenter(conversationsLayout);
         mainPane.setRight(listUserLayout);
         mainPane.setBottom(sendLayout);
@@ -67,5 +68,8 @@ public class WindowPrincipal extends Application {
     public void selectUser(User u){
         listUserLayout.focusUser(u);
         conversationsLayout.setFocusUser(u);
+    }
+
+    public void sendFile(String path) {
     }
 }
