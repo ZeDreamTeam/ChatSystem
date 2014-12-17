@@ -44,7 +44,7 @@ public class ListUserLayout extends VBox {
         });
         this.getChildren().add(list);
         list.setPrefSize(200, 600);
-        this.setMargin(list, new Insets(75, 75, 0, 75));
+        this.setMargin(list, new Insets(75, 60, 0, 75));
         this.setMinSize(200,200);
     }
     public void focusUser(User u){

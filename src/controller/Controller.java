@@ -236,8 +236,9 @@ public class Controller {
     }
 
 
-    public void notifyFileSent(FileDescription file) {
-        //TODO
+    public void notifyFileSent(String ipTo, FileDescription file) {
+        User user = getUser(ipTo);
+        logMessage(file,user, true);
     }
 
     public void notifyReceivingFile(String ipFrom, FileDescription file) {
@@ -245,11 +246,13 @@ public class Controller {
     }
 
     public void notifyFileReceived(String ipFrom, FileDescription file) {
-        //TODO
+        User user = getUser(ipFrom);
+        logMessage(file,user, false);
     }
 
     public void performSendFile(String filePath, User user) {
-        ni.doSendFile(new FileDescription(new File(filePath)),user.getIp());
+        FileDescription mFileToSend = new FileDescription(new File(filePath));
+        ni.doSendFile(mFileToSend,user.getIp());
     }
 
     /**
@@ -257,7 +260,7 @@ public class Controller {
      * @param ip
      * @return
      */
-    private boolean exists(String ip) {
+    public boolean exists(String ip) {
         return getUser(ip) != null;
     }
 
@@ -310,7 +313,7 @@ public class Controller {
      * @param user ''
      * @param iAmSender specify the direction of the message (false = incoming, true = outgoing)
      */
-    private void logMessage(Message mess, User user, boolean iAmSender){
+    private void logMessage(ReceivedStuff mess, User user, boolean iAmSender){
         HistMessage histMessage = new HistMessage(mess, iAmSender, new Date());
         user.addMessage(histMessage);
     }

@@ -156,9 +156,9 @@ public class ChatNI {
         }
     }
 
-    public void notifyFileSent(FileDescription file) {
+    public void notifyFileSent(String ipTo, FileDescription file) {
         this.senders.remove(file);
-        this.controller.notifyFileSent(file);
+        this.controller.notifyFileSent(ipTo, file);
     }
 
     public void start() {
@@ -171,5 +171,9 @@ public class ChatNI {
 
     public void doNotifyFileReceived(String ipFrom, FileDescription file) {
         this.controller.notifyFileReceived(ipFrom, file);
+    }
+
+    public boolean exists(String clientIp) {
+        return controller.exists(clientIp);
     }
 }

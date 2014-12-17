@@ -11,6 +11,8 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
+import javax.swing.*;
+
 
 public class WindowPrincipal extends Application {
 
@@ -63,14 +65,19 @@ public class WindowPrincipal extends Application {
     }
 
     public void sendMessage(String text) {
-        gui.doSend(text, ((ConversationTab)conversationsLayout.getSelectionModel().getSelectedItem()).getUser());
+        User toSend = conversationsLayout.getSelectedUser();
+        if(toSend != null)
+        gui.doSend(text, toSend);
     }
+
     public void selectUser(User u){
         listUserLayout.focusUser(u);
         conversationsLayout.setFocusUser(u);
     }
 
     public void sendFile(String path) {
-        gui.sendFile(path,((ConversationTab)conversationsLayout.getSelectionModel().getSelectedItem()).getUser() );
+        User toSend = conversationsLayout.getSelectedUser();
+        if(toSend != null)
+        gui.sendFile(path,toSend);
     }
 }

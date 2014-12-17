@@ -21,15 +21,25 @@ import javafx.stage.WindowEvent;
 
 public class WindowLogIn extends Application {
     private GUI gui;
-    private GridPane grid = new GridPane();
-    private Text scenetitle = new Text("Login plz");
-    final Label userName = new Label("User Name:");
-    final TextField editUserName = new TextField();
-    private Button connectButton = new Button("Connect");
-    private HBox connectButtonHBox = new HBox(10);
-    private Scene scene = new Scene(grid);
+    private GridPane grid;
+    private Text scenetitle;
+    private final Label userName;
+    private final TextField editUserName;
+    private Button connectButton;
+    private HBox connectButtonHBox;
+    private Scene scene;
     public WindowLogIn(GUI guy){
+
         gui = guy;
+        grid = new GridPane();
+        scenetitle = new Text("Login plz");
+        userName = new Label("UserName");
+        editUserName = new TextField();
+        connectButton = new Button("Connect");
+        connectButtonHBox = new HBox(10);
+        scene = new Scene(grid);
+
+
     }
     public static void main(String[] args) {
         launch(args);

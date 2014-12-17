@@ -1,7 +1,6 @@
 package networking;
 
 import data.FileDescription;
-import sun.swing.text.TextComponentPrintable;
 import utils.Logger;
 
 import java.io.*;
@@ -13,10 +12,10 @@ public class TcpReceiver extends Thread{
     private final String clientIp;
     private boolean shouldRun;
 
-    public TcpReceiver(TcpServer tcpServer, Socket socket ) {
+    public TcpReceiver(TcpServer tcpServer, Socket socket, String clientIp ) {
         this.clientSocket = socket;
         this.tcpServer=tcpServer;
-        this.clientIp=clientSocket.getRemoteSocketAddress().toString();
+        this.clientIp=clientIp;
         this.shouldRun = true;
     }
 

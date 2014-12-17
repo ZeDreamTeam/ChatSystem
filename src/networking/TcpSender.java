@@ -11,11 +11,13 @@ public class TcpSender extends Thread {
     private final ChatNI chatNI;
 
     private FileDescription fileDescription;
+    private String ipTo;
     private Socket clientSocket;
 
     public TcpSender(ChatNI chatNI, FileDescription file, String ipTo) throws NetworkingException.SendingException {
         this.chatNI = chatNI;
         this.fileDescription = file;
+        this.ipTo = ipTo;
         Logger.log("Starting sending file");
         try {
             this.clientSocket = new Socket(ipTo, Conf.PORT);
@@ -49,7 +51,7 @@ public class TcpSender extends Thread {
             dataOutputStream.close();
             outputStream.close();
             Logger.log("... file Sent!");
-            chatNI.notifyFileSent(fileDescription);
+            chatNI.notifyFileSent(ipTo, fileDescription);
 
             clientSocket.close();
 

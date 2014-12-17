@@ -55,4 +55,11 @@ public class ConversationsLayout extends TabPane{
             }
         }
     }
+    public User getSelectedUser(){
+        User ret = null;
+        ConversationTab currentTab = (ConversationTab)getSelectionModel().getSelectedItem();
+        if(currentTab != null)
+            ret = currentTab.getUser();
+        return ret;
+    }
 }

@@ -2,7 +2,7 @@ package data;
 
 import java.io.File;
 
-public class FileDescription {
+public class FileDescription implements ReceivedStuff {
     private String name, path;
     private long size;
 
@@ -32,5 +32,10 @@ public class FileDescription {
 
     public File getFile() {
         return new File(path);
+    }
+
+    @Override
+    public String toString() {
+        return path+":"+path+ " size :"+size;
     }
 }

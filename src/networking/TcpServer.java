@@ -17,6 +17,7 @@ public class TcpServer extends Thread{
     private ServerSocket socket;
     private boolean shouldRun;
     private Map<String, TcpReceiver> receivers;
+
     public TcpServer(ChatNI chatNI) throws NetworkingException.ReceivingFileException {
         this.chatNI = chatNI;
         this.localSockAddr = new InetSocketAddress(Conf.PORT);
@@ -37,10 +38,16 @@ public class TcpServer extends Thread{
                 try {
                     Logger.log("Waiting for a connection");
                     Socket sock = this.socket.accept();
-                    Logger.log("Connection accepted!");
-                    TcpReceiver receiver = new TcpReceiver(this,sock);
-                    receivers.put(sock.getRemoteSocketAddress().toString(), receiver);
-                    receiver.start();
+                    String clientIp = sock.getRemoteSocketAddress().toString();
+                    if(chatNI.exists(clientIp)){
+                        Logger.log("Connection accepted!");
+                        TcpReceiver receiver = new TcpReceiver(this,sock, clientIp);
+                        receivers.put(sock.getRemoteSocketAddress().toString(), receiver);
+                        receiver.start();
+                    }else{
+                        Logger.log("Connection refused from : "+clientIp);
+                    }
+
 
                 } catch (IOException e) {
                     e.printStackTrace();
