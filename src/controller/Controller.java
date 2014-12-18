@@ -45,13 +45,13 @@ public class Controller {
         Logger.log("Received Hello message from " + hello.getUserName());
 
         String uName = hello.getUserName();
-        if(!exists(ip) && !ip.equals(localUser.getIp()) && !isJeremie(ip)){
+        if(!exists(ip) && !ip.equals(localUser.getIp())){
             Logger.log("Creating user " + ip);
 
             User user = new User(uName, ip);
             addUser(new User(uName, ip));
             sendHelloAckMessage(user);
-        } else if (!existsAndIsConnected(ip) && !ip.equals(localUser.getIp()) && !isJeremie(ip)) {
+        } else if (!existsAndIsConnected(ip) && !ip.equals(localUser.getIp())) {
             Logger.log("Updating user " + ip);
             User user = getUser(ip);
             user.setName(uName);
@@ -71,14 +71,14 @@ public class Controller {
     public void receiveHelloAckMessage(HelloAckMessage hello, String ip){
         Logger.log("Received Hello Ack from " + hello.getUserName());
         String uName = hello.getUserName();
-        if(!exists(ip) && !ip.equals(localUser.getIp()) && !isJeremie(ip)){
+        if(!exists(ip) && !ip.equals(localUser.getIp())){
             Logger.log("Creating user " + ip);
 
             User user = new User(uName, ip);
             addUser(new User(uName, ip));
             sendHelloAckMessage(user);
             logMessage(hello, user, false);
-        } else if (!existsAndIsConnected(ip) && !ip.equals(localUser.getIp()) && !isJeremie(ip)) {
+        } else if (!existsAndIsConnected(ip) && !ip.equals(localUser.getIp())) {
             Logger.log("Updating user " + ip);
 
             User user = getUser(ip);
@@ -118,11 +118,11 @@ public class Controller {
         } else{
             User user = getUser(ip);
             Logger.log("Received MessAck  (" + messAckMessage.getMessageNumber() + ") from " + user.getName());
-
-            logMessage(messAckMessage, user, false);
+            logMessage(messAckMessage,user, false);
         }
 
     }
+
 
     /**
      *
@@ -327,11 +327,5 @@ public class Controller {
             sendGoodbyeMessage();
         }
         ni.shutNI();
-    }
-    public boolean isJeremie(String ip){
-        if(ip.contains("255")){
-            return true;
-        }
-        return false;
     }
 }
