@@ -1,0 +1,13 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="ChatSystemm:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/ChatSystemm_jar</output-path>
+    <root id="archive" name="ChatSystemm.jar">
+      <element id="module-output" name="ChatSystemm" />
+      <element id="extracted-dir" path="$APPLICATION_HOME_DIR$/lib/junit.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/libs/jackson-core-2.4.4.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$APPLICATION_HOME_DIR$/lib/junit-4.11.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/libs/jackson-databind-2.4.4.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/libs/jackson-annotations-2.4.4.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>
