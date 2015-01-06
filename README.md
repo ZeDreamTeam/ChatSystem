@@ -30,3 +30,4 @@ There is a lot of fantastic options like :
 * Quit the Application
 
 If you need more informations, here is a link to the [SRS](http://goo.gl/mvBjTz "Wow great SRS, you HAVE to see it !")
+And here is the [SDD](https://docs.google.com/document/d/1O3ql71T3Ph3JcmBCB6s-hMZBvGjhkz3-vnQTPBlBgVw/edit?usp=sharing "Wow what a wonderful world")
