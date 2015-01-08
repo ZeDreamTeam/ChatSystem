@@ -38,7 +38,8 @@ public class TcpServer extends Thread{
                 try {
                     Logger.log("Waiting for a connection");
                     Socket sock = this.socket.accept();
-                    String clientIp = sock.getRemoteSocketAddress().toString();
+                    String clientIp = sock.getInetAddress().getHostAddress();
+
                     if(chatNI.exists(clientIp)){
                         Logger.log("Connection accepted!");
                         TcpReceiver receiver = new TcpReceiver(this,sock, clientIp);
